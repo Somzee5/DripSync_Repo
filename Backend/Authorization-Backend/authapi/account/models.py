@@ -19,6 +19,7 @@ class UserManager(BaseUserManager):
             lastname = lastname,
             tc = tc,
         )
+        
 
         user.set_password(password)
         user.save(using=self._db)
