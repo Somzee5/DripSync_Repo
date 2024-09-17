@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 
 from rest_framework.response import Response 
@@ -7,6 +8,7 @@ from rest_framework.views import APIView
 from account.serializers import UserRegistrationSerializer,UserLoginSerializer,UserProfileSerializer,UserChangePasswordSerializer
 from account.models import User
 from account.renderers import UserRenderer
+
 
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
@@ -89,7 +91,7 @@ class UserProfileView(APIView):
 
     def get(self, request, format=None):
         serializer = UserProfileSerializer(request.user)
-
+ 
         return Response(serializer.data, status = status.HTTP_200_OK)
 
 

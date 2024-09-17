@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from account.models import User
 
-
-
-
 class UserRegistrationSerializer(serializers.ModelSerializer):
 
     # we are writing this bcoz we need a confirm password field in our registration
@@ -71,3 +68,6 @@ class UserChangePasswordSerializer(serializers.Serializer):
 
         return data
     
+
+
+

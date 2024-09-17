@@ -140,3 +140,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:8000",
 ]
+
+
+import os
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Where files will be saved on the server
+MEDIA_URL = '/media/'  # URL used to access the media files

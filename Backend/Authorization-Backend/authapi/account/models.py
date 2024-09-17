@@ -83,3 +83,38 @@ class User(AbstractBaseUser):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
+
+# Physical Attributes model
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class PhysicalAttributes(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='physical_attributes')
+    gender = models.CharField(max_length=10)
+    height = models.DecimalField(max_digits=5, decimal_places=2)  # Height in cm
+    weight = models.DecimalField(max_digits=5, decimal_places=2)  # Weight in kg
+    age = models.PositiveIntegerField()
+    skin_tone = models.CharField(max_length=20)
+    photo = models.ImageField(upload_to='user_photos/', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.email
+    
+
+from django.db import models
+from django.conf import settings  # Import settings to use AUTH_USER_MODEL
+# from django.contrib.auth.models import User
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    height = models.FloatField()
+    weight = models.FloatField()
+    age = models.IntegerField()
+    # Add your image field here, not a TextField
+    captured_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+
