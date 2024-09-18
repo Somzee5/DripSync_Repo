@@ -94,7 +94,8 @@ class UserLoginView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
 
-        user = authenticate(email=email, password=password)
+        # Ensure 'email' is used as the username in the authentication backend
+        user = authenticate(request, username=email, password=password)
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
@@ -142,30 +143,19 @@ from rest_framework.decorators import api_view, permission_classes
 
 
 
-@api_view(['GET', 'POST'])
+
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def complete_profile(request, user_id):
-    # Check if the user is trying to access their own profile
     if request.user.id != user_id:
         return Response({'error': 'Unauthorized access'}, status=status.HTTP_403_FORBIDDEN)
+    profile_data = {
+        'user_id': user_id,
+        'email': request.user.email,
+    }
+    return Response({'profile': profile_data}, status=status.HTTP_200_OK)
 
-    try:
-        profile = Profile.objects.get(user_id=user_id)
-    except Profile.DoesNotExist:
-        return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    # Handle GET request to retrieve existing profile data
-    if request.method == 'GET':
-        serializer = ProfileSerializer(profile)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # Handle POST request to update profile data
-    if request.method == 'POST':
-        serializer = ProfileSerializer(profile, data=request.data, partial=True)  # Use partial=True to allow partial updates
-        if serializer.is_valid():
-            serializer.save()  # Save the updated profile data
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

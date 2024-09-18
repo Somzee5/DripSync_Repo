@@ -19,23 +19,17 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
-    e.preventDefault();  
-  
+    e.preventDefault();
     try {
-      const response = await api.post('/login/', { 
-        email,
-        password
-      });
-  
+      const response = await api.post('/login/', { email, password });
       const { access, user_id } = response.data;
       sessionStorage.setItem('access_token', access); // Store token in sessionStorage
-  
-      // Redirect to the profile page
       history.push(`/profile/${user_id}`);
     } catch (error) {
       setError('Invalid email or password');
     }
   };
+  
   
 
   return (
