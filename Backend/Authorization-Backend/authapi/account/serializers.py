@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from account.models import User
+from account.models import User,Profile
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
 
@@ -39,12 +39,19 @@ class UserLoginSerializer(serializers.ModelSerializer):
         fields = ['email', 'password']
 
 
-# Profile Serializer
+# User Profile Serializer
 class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = ['id', 'email', 'firstname', 'lastname']
+
+# Profile serializer
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['height', 'weight', 'age', 'gender', 'skin_tone', 'captured_image']  # Already looks good!
+
 
 
 # change password serializer

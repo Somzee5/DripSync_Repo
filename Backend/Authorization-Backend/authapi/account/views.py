@@ -5,13 +5,14 @@ from rest_framework.response import Response
 from rest_framework import status 
 from rest_framework.views import APIView 
 
-from account.serializers import UserRegistrationSerializer,UserLoginSerializer,UserProfileSerializer,UserChangePasswordSerializer
-from account.models import User
+from account.serializers import UserRegistrationSerializer,UserLoginSerializer,ProfileSerializer,UserChangePasswordSerializer
+from account.models import User, Profile
 from account.renderers import UserRenderer
 
 
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 from rest_framework_simplejwt.tokens import RefreshToken
 # Generate token manually 
@@ -54,6 +55,7 @@ class UserRegistrationView(APIView):
         status = status.HTTP_400_BAD_REQUEST, )
         
 # Login view
+'''
 class UserLoginView(APIView):
     renderer_classes = [UserRenderer]
 
@@ -81,18 +83,110 @@ class UserLoginView(APIView):
 
         return Response({'message': 'Login unsuccessful',
                 'errors': serializer.errors},
-                status= status.HTTP_400_BAD_REQUEST)
+                status= status.HTTP_400_BAD_REQUEST)'''
+
+
+
+class UserLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        user = authenticate(email=email, password=password)
+
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user_id': user.id
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                'error': 'Invalid email or password'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
             
 # Getting info using the access token generated while logging in
-class UserProfileView(APIView):
+'''class UserProfileView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         serializer = UserProfileSerializer(request.user)
  
-        return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.data, status = status.HTTP_200_OK)'''
+
+
+'''class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            return Response({
+                'name': user.firstname,
+                'email': user.email,
+                # Include other fields here
+            })
+        except User.DoesNotExist:
+            return Response({
+                'error': 'User not found'
+            }, status=404)'''
+from rest_framework.decorators import api_view, permission_classes
+
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def complete_profile(request, user_id):
+    # Check if the user is trying to access their own profile
+    if request.user.id != user_id:
+        return Response({'error': 'Unauthorized access'}, status=status.HTTP_403_FORBIDDEN)
+
+    try:
+        profile = Profile.objects.get(user_id=user_id)
+    except Profile.DoesNotExist:
+        return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Handle GET request to retrieve existing profile data
+    if request.method == 'GET':
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Handle POST request to update profile data
+    if request.method == 'POST':
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)  # Use partial=True to allow partial updates
+        if serializer.is_valid():
+            serializer.save()  # Save the updated profile data
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_current_user(request):
+    user_data = {
+        'user_id': request.user.id,
+        'email': request.user.email,
+        'firstname': request.user.firstname,
+        # Add other fields if needed
+    }
+    
+    return Response({'user': user_data}, status=200)
+
+
+
+
+
+
 
 
 

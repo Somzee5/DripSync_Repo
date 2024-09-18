@@ -35,14 +35,5 @@ class UserModelAdmin(BaseUserAdmin):
 # Now register the new UserModelAdmin
 admin.site.register(User, UserModelAdmin)
 
-
-from .models import PhysicalAttributes
-
-@admin.register(PhysicalAttributes)
-class PhysicalAttributesAdmin(admin.ModelAdmin):
-    list_display = ('user', 'height', 'weight', 'age', 'gender', 'skin_tone', 'photo')
-
-
-
 from .models import Profile  # Adjust to match the actual model name
 admin.site.register(Profile)
