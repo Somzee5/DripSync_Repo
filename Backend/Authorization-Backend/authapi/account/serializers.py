@@ -44,11 +44,13 @@ class UserLoginSerializer(serializers.ModelSerializer):
 from drf_extra_fields.fields import Base64ImageField  # This package helps with base64 image handling
 
 class ProfileSerializer(serializers.ModelSerializer):
-    captured_image = Base64ImageField(required=False)  # Handle base64 image
 
     class Meta:
         model = Profile
         fields = ['height', 'weight', 'age', 'gender', 'skin_tone', 'captured_image']
+
+    def create(self, validated_data):
+        return Profile.objects.create(**validated_data)
 
 
 

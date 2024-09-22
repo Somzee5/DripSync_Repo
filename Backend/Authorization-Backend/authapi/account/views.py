@@ -129,11 +129,11 @@ def complete_profile(request, user_id):
 
 
 
-import base64
-from django.core.files.base import ContentFile
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+
+
 
 class CompleteProfileView(APIView):
     permission_classes = [IsAuthenticated]
@@ -145,7 +145,6 @@ class CompleteProfileView(APIView):
         
         # Create new profile
         try:
-            # You can access the authenticated user via request.user
             user = request.user
 
             # Make sure user ID from URL matches the authenticated user
@@ -154,18 +153,16 @@ class CompleteProfileView(APIView):
 
             profile_data = request.data
 
-            # Handle base64 image if provided
-            if 'captured_image' in profile_data:
-                image_data = profile_data['captured_image']
-                format, imgstr = image_data.split(';base64,')  # Get format and base64 string
-                ext = format.split('/')[-1]  # Extract file extension
-                profile_data['captured_image'] = ContentFile(base64.b64decode(imgstr), f'{user.id}.{ext}')
-            
+            # Handle image file if uploaded
+            captured_image = request.FILES.get('captured_image')
+
             # Create the Profile object
             serializer = ProfileSerializer(data=profile_data)
             if serializer.is_valid():
-                # Manually link the user to the profile before saving
-                serializer.save(user=user)
+                profile = serializer.save(user=user)
+                if captured_image:
+                    profile.captured_image = captured_image
+                    profile.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -173,6 +170,34 @@ class CompleteProfileView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+    def put(self, request, user_id):
+        try:
+            user = request.user
+            # Fetch the existing profile
+            profile = Profile.objects.get(user__id=user_id)
+            
+            # Ensure the authenticated user matches the user in the profile
+            if request.user.id != user_id:
+                return Response({"error": "User ID mismatch."}, status=status.HTTP_403_FORBIDDEN)
+
+            profile_data = request.data
+
+            captured_image = request.FILES.get('captured_image')
+
+            # Create the Profile object
+            serializer = ProfileSerializer(data=profile_data)
+            if serializer.is_valid():
+                profile = serializer.save(user=user)
+                if captured_image:
+                    profile.captured_image = captured_image
+                    profile.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            
 
 
 

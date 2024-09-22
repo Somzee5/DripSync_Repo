@@ -78,23 +78,7 @@ const Login = () => {
               <div className="text-center">
                 <p>Don't have an account? <span style={{ color: '#1266f1', cursor: 'pointer' }} onClick={() => history.push('/register')}>Sign Up</span></p>
 
-                <p>or sign in with:</p>
-
-                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='facebook-f' size="sm" />
-                </MDBBtn>
-
-                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='twitter' size="sm" />
-                </MDBBtn>
-
-                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='google' size="sm" />
-                </MDBBtn>
-
-                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='github' size="sm" />
-                </MDBBtn>
+                
               </div>
             </MDBCardBody>
           </MDBCard>
