@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status 
 from rest_framework.views import APIView 
 
-from account.serializers import UserRegistrationSerializer,UserLoginSerializer,ProfileSerializer,UserChangePasswordSerializer
+from account.serializers import UserRegistrationSerializer, ProfileSerializer,UserChangePasswordSerializer
 from account.models import User, Profile
 from account.renderers import UserRenderer
 
@@ -54,36 +54,7 @@ class UserRegistrationView(APIView):
         'data': serializer.errors},
         status = status.HTTP_400_BAD_REQUEST, )
         
-# Login view
-'''
-class UserLoginView(APIView):
-    renderer_classes = [UserRenderer]
-
-    def post(self,request):
-        data = request.data
-        serializer = UserLoginSerializer(data = data)
-
-        if serializer.is_valid(raise_exception=True):
-            email = data.get('email')
-            password = data.get('password')
-
-            user = authenticate(email = email, password = password)
-
-            if user is not None:
-                token = get_tokens_for_user(user)
-
-                return Response({ 'message': 'Login successfull',
-                    'token': token},
-                    status = status.HTTP_200_OK ,)
-
-            else:
-                return Response({'errors': {'non_fiels_errors': ['email or password is not valid']}},
-                    status= status.HTTP_404_NOT_FOUND)
-            
-
-        return Response({'message': 'Login unsuccessful',
-                'errors': serializer.errors},
-                status= status.HTTP_400_BAD_REQUEST)'''
+        
 
 
 
@@ -139,12 +110,11 @@ class UserLoginView(APIView):
             return Response({
                 'error': 'User not found'
             }, status=404)'''
+
+
 from rest_framework.decorators import api_view, permission_classes
 
-
-
-
-
+'''
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def complete_profile(request, user_id):
@@ -154,7 +124,55 @@ def complete_profile(request, user_id):
         'user_id': user_id,
         'email': request.user.email,
     }
-    return Response({'profile': profile_data}, status=status.HTTP_200_OK)
+    return Response({'profile': profile_data}, status=status.HTTP_200_OK)'''
+
+
+
+
+import base64
+from django.core.files.base import ContentFile
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+class CompleteProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        # Check if the profile already exists
+        if Profile.objects.filter(user__id=user_id).exists():
+            return Response({"error": "Profile already exists for this user."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Create new profile
+        try:
+            # You can access the authenticated user via request.user
+            user = request.user
+
+            # Make sure user ID from URL matches the authenticated user
+            if user.id != user_id:
+                return Response({"error": "User ID mismatch."}, status=status.HTTP_403_FORBIDDEN)
+
+            profile_data = request.data
+
+            # Handle base64 image if provided
+            if 'captured_image' in profile_data:
+                image_data = profile_data['captured_image']
+                format, imgstr = image_data.split(';base64,')  # Get format and base64 string
+                ext = format.split('/')[-1]  # Extract file extension
+                profile_data['captured_image'] = ContentFile(base64.b64decode(imgstr), f'{user.id}.{ext}')
+            
+            # Create the Profile object
+            serializer = ProfileSerializer(data=profile_data)
+            if serializer.is_valid():
+                # Manually link the user to the profile before saving
+                serializer.save(user=user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 
@@ -171,10 +189,6 @@ def get_current_user(request):
     }
     
     return Response({'user': user_data}, status=200)
-
-
-
-
 
 
 
