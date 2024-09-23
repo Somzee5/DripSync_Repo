@@ -83,48 +83,12 @@ class UserLoginView(APIView):
 
 
 
-            
-# Getting info using the access token generated while logging in
-'''class UserProfileView(APIView):
-    renderer_classes = [UserRenderer]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, format=None):
-        serializer = UserProfileSerializer(request.user)
- 
-        return Response(serializer.data, status = status.HTTP_200_OK)'''
-
-
-'''class UserProfileView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, user_id):
-        try:
-            user = User.objects.get(id=user_id)
-            return Response({
-                'name': user.firstname,
-                'email': user.email,
-                # Include other fields here
-            })
-        except User.DoesNotExist:
-            return Response({
-                'error': 'User not found'
-            }, status=404)'''
+  
 
 
 from rest_framework.decorators import api_view, permission_classes
 
-'''
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def complete_profile(request, user_id):
-    if request.user.id != user_id:
-        return Response({'error': 'Unauthorized access'}, status=status.HTTP_403_FORBIDDEN)
-    profile_data = {
-        'user_id': user_id,
-        'email': request.user.email,
-    }
-    return Response({'profile': profile_data}, status=status.HTTP_200_OK)'''
+
 
 
 
@@ -233,4 +197,79 @@ class UserChangePasswordView(APIView):
                 status = status.HTTP_200_OK )
         
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
+
+
+# View for Sending OTP
+from django.core.mail import send_mail
+from .models import User, OTP
+import random
+
+class ForgotPasswordView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        try:
+            user = User.objects.get(email=email)
+            otp = random.randint(100000, 999999)
+            # Save OTP in the database (optional)
+            OTP.objects.create(user=user, otp=otp)
+
+            # Send OTP via email
+            send_mail(
+                'Your OTP for Password Reset',
+                f'Your OTP is {otp}',
+                'sohampatilsp55@gmail.com',  # Sender email
+                [email],  # Receiver email
+                fail_silently=False,
+            )
+
+            return Response({"message": "OTP sent to your email"}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+# View to Verify OTP and Reset Password
+from django.contrib.auth.hashers import make_password
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import OTP  # Make sure to import your OTP model
+from django.utils import timezone
+
+class VerifyOTPView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        otp_input = request.data.get('otp_input')
+        new_password = request.data.get('new_password')  # Get new password from request
+
+        try:
+
+
+            # Get the OTP record for the given email
+            otp_record = OTP.objects.get(user__email=email, otp=otp_input, is_valid=True)
+
+            # Check if the OTP is still valid (e.g., check timestamp)
+            if (timezone.now() - otp_record.created_at).seconds > 300:
+                return Response({"error": "OTP has expired"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # If valid, proceed to update the user's password
+            user = otp_record.user
+            user.set_password(new_password)
+            user.save()
+
+            # Mark OTP as used
+            otp_record.is_valid = False
+            otp_record.save()
+
+            return Response({"message": "Password has been reset successfully!"}, status=status.HTTP_200_OK)
+
+        except OTP.DoesNotExist:
+            return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 

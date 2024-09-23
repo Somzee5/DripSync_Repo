@@ -114,3 +114,19 @@ class Profile(models.Model):
 
 
 
+from django.conf import settings
+from django.utils import timezone
+
+
+class OTP(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Update this line
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(default=timezone.now)
+    is_valid = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.otp}"
+
+
+
+
