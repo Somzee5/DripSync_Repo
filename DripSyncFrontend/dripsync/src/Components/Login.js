@@ -25,7 +25,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post('/login/', { email, password });
-      const { access, user_id } = response.data;
+      const { access} = response.data;
       sessionStorage.setItem('access_token', access);
       history.push(`/home`);
     } 

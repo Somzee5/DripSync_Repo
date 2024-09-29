@@ -16,8 +16,6 @@ from rest_framework.permissions import AllowAny
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
-
 # Registration view
 class UserRegistrationView(APIView):
     renderer_classes = [UserRenderer]
@@ -226,8 +224,6 @@ class ForgotPasswordView(APIView):
 
 
 
-# View to Verify OTP and Reset Password
-from django.contrib.auth.hashers import make_password
 
 from rest_framework.views import APIView
 from rest_framework.response import Response

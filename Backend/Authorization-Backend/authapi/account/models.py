@@ -106,6 +106,7 @@ class Profile(models.Model):
     weight = models.FloatField()
     age = models.IntegerField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True)
+    waist = models.FloatField(null=True)
     skin_tone = models.CharField(max_length=2, choices=SKIN_TONE_CHOICES, default='LT')
     captured_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 

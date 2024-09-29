@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import api from '../utils/api'; // Assuming axios is configured here
-import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import {
   MDBContainer,
   MDBRow,
@@ -14,12 +13,13 @@ import {
 
 const Profile = () => {
   const history = useHistory();
-
   const { user_id } = useParams();
+
   const [profileData, setProfileData] = useState({
+    age: '',
     height: '',
     weight: '',
-    age: '',
+    waist: '',
     gender: 'M',
     skin_tone: 'LT',
     captured_image: null, // For file upload, store the file here
@@ -38,12 +38,13 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    formData.append('age', profileData.age);
     formData.append('height', profileData.height);
     formData.append('weight', profileData.weight);
-    formData.append('age', profileData.age);
+    formData.append('waist', profileData.waist);
     formData.append('gender', profileData.gender);
     formData.append('skin_tone', profileData.skin_tone);
-    
+
     // Append image file if selected
     if (profileData.captured_image) {
       formData.append('captured_image', profileData.captured_image);
@@ -57,9 +58,9 @@ const Profile = () => {
       });
       console.log('Profile created:', response.data);
 
-      history.push('/home')
+      history.push('/home');
     } catch (error) {
-      console.error('Error creating profile:', error.response.data);
+      console.error('Error creating profile:', error.response?.data || error.message);
     }
   };
 
@@ -71,26 +72,7 @@ const Profile = () => {
             <MDBCardBody className='p-5'>
               <h1 className='text-center mb-4'>Create Profile</h1>
               <form onSubmit={handleSubmit}>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  label='Height (in cm)'
-                  id='height'
-                  type='number'
-                  name='height'
-                  value={profileData.height}
-                  onChange={handleInputChange}
-                  required
-                />
-                <MDBInput
-                  wrapperClass='mb-4'
-                  label='Weight (in kg)'
-                  id='weight'
-                  type='number'
-                  name='weight'
-                  value={profileData.weight}
-                  onChange={handleInputChange}
-                  required
-                />
+                {/* Age Input */}
                 <MDBInput
                   wrapperClass='mb-4'
                   label='Age'
@@ -101,6 +83,44 @@ const Profile = () => {
                   onChange={handleInputChange}
                   required
                 />
+
+                {/* Height Input */}
+                <MDBInput
+                  wrapperClass='mb-4'
+                  label='Height (in cm)'
+                  id='height'
+                  type='number'
+                  name='height'
+                  value={profileData.height}
+                  onChange={handleInputChange}
+                  required
+                />
+
+                {/* Weight Input */}
+                <MDBInput
+                  wrapperClass='mb-4'
+                  label='Weight (in kg)'
+                  id='weight'
+                  type='number'
+                  name='weight'
+                  value={profileData.weight}
+                  onChange={handleInputChange}
+                  required
+                />
+
+                {/* Waist Input */}
+                <MDBInput
+                  wrapperClass='mb-4'
+                  label='Waist Size (in cm)'
+                  id='waist'
+                  type='number'
+                  name='waist'
+                  value={profileData.waist}
+                  onChange={handleInputChange}
+                  required
+                />
+
+                {/* Gender Select */}
                 <div className='mb-4'>
                   <label className='form-label'>Gender</label>
                   <select
@@ -112,8 +132,11 @@ const Profile = () => {
                   >
                     <option value='M'>Male</option>
                     <option value='F'>Female</option>
+                    {/* You can add more options if needed */}
                   </select>
                 </div>
+
+                {/* Skin Tone Select */}
                 <div className='mb-4'>
                   <label className='form-label'>Skin Tone</label>
                   <select
@@ -128,6 +151,8 @@ const Profile = () => {
                     <option value='DK'>Dark</option>
                   </select>
                 </div>
+
+                {/* Image Upload */}
                 <div className='mb-4'>
                   <label className='form-label'>Upload Image</label>
                   <input
@@ -138,6 +163,8 @@ const Profile = () => {
                     accept='image/*'
                   />
                 </div>
+
+                {/* Submit Button */}
                 <MDBBtn className='w-100 mb-4' size='md' type='submit'>
                   Create Profile
                 </MDBBtn>
