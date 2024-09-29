@@ -5,9 +5,9 @@ import VerifyOtp from './Components/VerifyOtp';
 import Signup from './Components/Signup';
 import Profile from './Components/Profile';
 import ProtectedRoute from './Components/ProtectedRoute';
+import Home from './Components/Home';
 
 
-import './App.css';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
         <Route path="/register" component={Signup} />
         <ProtectedRoute path="/profile/:user_id" component={Profile} />
         <ProtectedRoute path="/me/" component={ProtectedRoute} />
+        <ProtectedRoute path="/home" component={Home} />
       </Switch>
     </Router>
   );

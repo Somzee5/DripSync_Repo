@@ -15,14 +15,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
 
 from rest_framework_simplejwt.tokens import RefreshToken
-# Generate token manually 
-def get_tokens_for_user(user):
-    refresh = RefreshToken.for_user(user)
 
-    return {
-        'refresh': str(refresh),
-        'access': str(refresh.access_token),
-    }
 
 
 # Registration view
@@ -41,12 +34,14 @@ class UserRegistrationView(APIView):
                 status = status.HTTP_400_BAD_REQUEST, )
 
             user = serializer.save()
-            # after saving the user .. we generate the token manually
-            token = get_tokens_for_user(user)
+            
 
+            refresh = RefreshToken.for_user(user)
 
             return Response({'message': 'registration successfull',
-            'token': token,
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user_id': user.id,
             'data': serializer.data},
             status = status.HTTP_201_CREATED ,)
 

@@ -9,8 +9,7 @@ import {
   MDBCard,
   MDBCardBody,
   MDBInput,
-  MDBCheckbox,
-  MDBIcon // Add this line
+  MDBCheckbox
 } from 'mdb-react-ui-kit';
 
 const Signup = () => {
@@ -40,7 +39,7 @@ const Signup = () => {
   const handleCheckboxChange = (e) => {
     setFormData({
       ...formData,
-      termsAccepted: e.target.checked
+      termsAccepted: e.target.checked 
     });
   };
 
@@ -67,10 +66,14 @@ const Signup = () => {
         password2: formData.confirmPassword,
         tc: formData.termsAccepted
       });
-      
-      // Redirect to login page on successful registration
-      history.push('/');
-    } catch (err) {
+
+      const { access, user_id } = response.data;
+      sessionStorage.setItem('access_token', access);
+      history.push(`/profile/${user_id}`);
+
+    } 
+    catch (err) 
+    {
       console.error(err);
       setError('An error occurred during registration. Please try again.');
     }
@@ -164,25 +167,7 @@ const Signup = () => {
                 </p>
               </form>
 
-              <div className="text-center">
-                <p>or sign up with:</p>
-
-                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='facebook-f' size="sm"/> {/* Use MDBIcon here */}
-                </MDBBtn>
-
-                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='twitter' size="sm"/> {/* Use MDBIcon here */}
-                </MDBBtn>
-
-                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='google' size="sm"/> {/* Use MDBIcon here */}
-                </MDBBtn>
-
-                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='github' size="sm"/> {/* Use MDBIcon here */}
-                </MDBBtn>
-              </div>
+              
             </MDBCardBody>
           </MDBCard>
         </MDBCol>

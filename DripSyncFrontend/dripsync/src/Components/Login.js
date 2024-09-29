@@ -5,7 +5,7 @@ import {
   MDBBtn,
   MDBContainer,
   MDBRow,
-  MDBCol,
+  MDBCol, 
   MDBCard,
   MDBCardBody,
   MDBInput,
@@ -27,8 +27,10 @@ const Login = () => {
       const response = await api.post('/login/', { email, password });
       const { access, user_id } = response.data;
       sessionStorage.setItem('access_token', access);
-      history.push(`/profile/${user_id}`);
-    } catch (error) {
+      history.push(`/home`);
+    } 
+    catch (error) 
+    {
       setError('Invalid email or password');
     }
   };
@@ -78,6 +80,13 @@ const Login = () => {
         <MDBCol md='6' className='position-relative'>
           <MDBCard className='my-5 bg-glass'>
             <MDBCardBody className='p-5'>
+              {/* Sign-Up Button in the upper right corner */}
+              <div className="d-flex justify-content-end mb-4">
+                <MDBBtn size='md' onClick={() => history.push('/register')}>
+                  Sign Up
+                </MDBBtn>
+              </div>
+
               {!showOtpInput ? (
                 <form onSubmit={handleLogin}>
                   <MDBInput
@@ -102,9 +111,10 @@ const Login = () => {
                   <MDBBtn className='w-100 mb-4' size='md' type="submit">
                     Log In
                   </MDBBtn>
+
+                  {/* Forgot Password and Text */}
                   <div className="text-center">
                     <p>Forgot your password? <span style={{ color: '#1266f1', cursor: 'pointer' }} onClick={handleForgotPassword}>Reset it</span></p>
-                    <p>Don't have an account? <span style={{ color: '#1266f1', cursor: 'pointer' }} onClick={() => history.push('/register')}>Sign Up</span></p>
                   </div>
                 </form>
               ) : (
