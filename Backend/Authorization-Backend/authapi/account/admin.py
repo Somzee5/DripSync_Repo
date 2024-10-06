@@ -35,5 +35,9 @@ class UserModelAdmin(BaseUserAdmin):
 # Now register the new UserModelAdmin
 admin.site.register(User, UserModelAdmin)
 
-from .models import Profile  # Adjust to match the actual model name
+from .models import Profile  
 admin.site.register(Profile)
+
+
+from .models import Wardrobe
+admin.site.register(Wardrobe)

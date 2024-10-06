@@ -85,10 +85,7 @@ class User(AbstractBaseUser):
 
 
     
-
-from django.db import models
 from django.conf import settings  # Import settings to use AUTH_USER_MODEL
-
 class Profile(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),
@@ -112,6 +109,29 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
+
+from django.conf import settings  # Import settings to use AUTH_USER_MODEL
+from django.db import models
+
+class Wardrobe(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='wardrobe')
+    Id_Product = models.CharField(max_length=255)
+    Product_URL = models.URLField(max_length=500)
+    URL_image = models.URLField(max_length=500)
+    Description = models.TextField()
+    Price = models.DecimalField(max_digits=10, decimal_places=2)
+    added_date = models.DateTimeField(auto_now_add=True)  # Automatically set the current date and time
+
+    def __str__(self):
+        return f'{self.user.email} - {self.Description[:30]}'
+
+
+
+
+
+
 
 
 
