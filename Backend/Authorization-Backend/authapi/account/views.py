@@ -129,7 +129,7 @@ class CompleteProfileView(APIView):
 
     def put(self, request, user_id):
         try:
-            user = request.user
+            user = request.user 
             # Fetch the existing profile
             profile = Profile.objects.get(user__id=user_id)
             

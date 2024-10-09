@@ -5,8 +5,9 @@ import VerifyOtp from './Components/VerifyOtp';
 import Signup from './Components/Signup';
 import Profile from './Components/Profile';
 import ProtectedRoute from './Components/ProtectedRoute';
-import Home from './Components/Home';
-
+// import Home from './Components/Home';
+import Home from './Pages/Home';
+import PersonalProfile from './Pages/PersonalProfile';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <ProtectedRoute path="/profile/:user_id" component={Profile} />
         <ProtectedRoute path="/me/" component={ProtectedRoute} />
         <ProtectedRoute path="/home" component={Home} />
+        <ProtectedRoute path="/myprofile" component={PersonalProfile} />
       </Switch>
     </Router>
   );

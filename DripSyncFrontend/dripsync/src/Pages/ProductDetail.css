@@ -1,0 +1,101 @@
+.product-detail-page {
+  padding: 20px;
+}
+
+.product-detail-container {
+  display: flex;
+  margin-top: 20px;
+}
+
+.product-image {
+  flex: 2; /* Makes image take more space */
+  margin-right: 20px;
+}
+
+.product-image img {
+  width: 100%; /* Responsive image */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.product-info {
+  flex: 3; /* Makes info take more space */
+}
+
+.product-info h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.product-info p {
+  margin: 10px 0;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.buy-now-button, .try-on-button, .view-details-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buy-now-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.try-on-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.view-details-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.buy-now-button:hover {
+  background-color: #218838;
+}
+
+.try-on-button:hover {
+  background-color: #0056b3;
+}
+
+.recommendations {
+  margin-top: 40px;
+}
+
+.recommendation-cards {
+  display: flex;
+  justify-content: space-between; /* Space between cards */
+  flex-wrap: wrap; /* Allow cards to wrap */
+}
+
+.recommendation-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px; /* Fixed width for cards */
+  margin-right: 20px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.recommendation-card:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.recommendation-card img {
+  width: 100%; /* Responsive image for cards */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 10px; /* Rounded corners */
+}

@@ -1,0 +1,124 @@
+/* General Styles for Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #f1f3f5, #e9ecef);
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+/* Logo Styles */
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Navbar Item Styles */
+.navbar-item {
+    margin: 0 20px;
+    font-weight: 500;
+    color: #495057;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.navbar-item:hover {
+    color: #0d6efd;
+    text-decoration: underline;
+}
+
+/* Dropdown Menu */
+.category-dropdown {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: auto;
+}
+
+/* 3-4 Column Layout */
+.dropdown-columns {
+    display: grid;
+    grid-template-columns: repeat(5, 10fr); /* Adjust columns */
+    gap: 5px;
+}
+
+/* Category Item Styles */
+.category-dropdown a {
+    display: block;
+    font-size: 16px;
+    color: #495057;
+    padding: 8px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.category-dropdown a:hover {
+    color: #fff;
+    background-color: #0d6efd;
+    border-radius: 4px;
+}
+
+/* Search Bar Styles */
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    width: 250px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 100%;
+}
+
+.suggestion-item {
+    padding: 10px;
+    font-size: 16px;
+    color: #495057;
+    transition: background-color 0.3s ease;
+}
+
+.suggestion-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Profile Icon */
+.nav-link {
+    color: #495057;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #0d6efd;
+}
