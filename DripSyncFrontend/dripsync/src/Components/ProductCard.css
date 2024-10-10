@@ -1,0 +1,73 @@
+/* components/productCard.css */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%; /* Full width of the screen */
+    margin: 0 auto;
+}
+
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.card {
+    width: 30%; /* 3 cards per row with appropriate spacing */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    margin: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease; /* Animation for hover effect */
+}
+
+.card:hover {
+    transform: translateY(-10px); /* Adds a hover effect for better UI */
+}
+
+.card-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 1.2rem; /* Larger font for brand/title */
+    font-weight: bold;
+}
+
+.card p {
+    font-size: 1rem; /* Larger font for details */
+    color: #333;
+}
+
+.card-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.card-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 45%; /* For smaller screens, show 2 cards per row */
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        width: 100%; /* For mobile, show 1 card per row */
+    }
+}

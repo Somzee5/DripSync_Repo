@@ -30,7 +30,7 @@ const Home = () => {
       {/* Product Cards */}
       <MDBRow className="product-cards mt-5">
         {products.map((product, index) => (
-          <MDBCol md="4" key={index}>
+          <MDBCol md="9" key={index}>
             <ProductCard product={product} />
           </MDBCol>
         ))}

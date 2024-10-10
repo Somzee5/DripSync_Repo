@@ -22,8 +22,10 @@ const HeroSection = ({ handleSearch, suggestions }) => {
   const [openBasic, setOpenBasic] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const renderSuggestions = () => {
-    return suggestions.map((suggestion, index) => (
+  const renderSuggestions = () => 
+    {
+    return suggestions.map((suggestion, index) => 
+    (
       <div key={index} className="suggestion-item">
         {suggestion}
       </div>
@@ -48,7 +50,7 @@ const HeroSection = ({ handleSearch, suggestions }) => {
       'Palazzo', 'Trackpants', 'Jumpsuits & Playsuits',
       'Jackets & Coats', 'Tights', 'Kurtis & Tunics', 'Gown', 'Dupatta',
       'Blouses', 'Shrugs & Boleros', 'Shawls & Wraps',
-      'Sweaters & Cardigans', 'Dungarees', 'Skirts & Ghagras',
+      'Sweaters & Cardigans', 'Dungarees', 'Skirts',
       'Hipsters', 'Swimsuit', 'Nightgown', 'Briefs'
   ];
 
@@ -81,8 +83,9 @@ const HeroSection = ({ handleSearch, suggestions }) => {
                   <div className="dropdown-columns">
                     {menCategories.map((category, index) => (
                       <MDBDropdownItem key={index} link>
-                        <a href={`#${category}`}>{category}</a> {/* Hyperlink to category */}
+                        <Link to={`/home/men/${category}`}>{category}</Link>
                       </MDBDropdownItem>
+                    
                     ))}
                   </div>
                 </MDBDropdownMenu>
@@ -99,8 +102,9 @@ const HeroSection = ({ handleSearch, suggestions }) => {
                   <div className="dropdown-columns">
                     {womenCategories.map((category, index) => (
                       <MDBDropdownItem key={index} link>
-                        <a href={`#${category}`}>{category}</a> {/* Hyperlink to category */}
-                      </MDBDropdownItem>
+                      <Link to={`/home/women/${category}`}>{category}</Link>
+                    </MDBDropdownItem>
+                    
                     ))}
                   </div>
                 </MDBDropdownMenu>
