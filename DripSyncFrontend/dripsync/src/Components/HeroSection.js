@@ -18,14 +18,12 @@ import {
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import './HeroSection.css';
 
-const HeroSection = ({ handleSearch, suggestions }) => {
+const HeroSection = ({ handleSearch, user_id, suggestions }) => {
   const [openBasic, setOpenBasic] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const renderSuggestions = () => 
-    {
-    return suggestions.map((suggestion, index) => 
-    (
+  const renderSuggestions = () => {
+    return suggestions.map((suggestion, index) => (
       <div key={index} className="suggestion-item">
         {suggestion}
       </div>
@@ -33,11 +31,11 @@ const HeroSection = ({ handleSearch, suggestions }) => {
   };
 
   const menCategories = [
-      'Polo T-shirt', 'Trousers', 'Slim Fit Shirt', 'T-shirt', 'Jeans',
-      'Track Pants', 'Shorts', 'Printed Shirt', 'Printed T-shirt',
-      'Chinos', 'Joggers', 'pants', 'Jacket', 'Shackets', 'Pyjamas',
-      'Bermudas', 'Blazer', 'Hoodie', 'Sweatshirt', 'Pullovers', 'Kurta',
-      'Three-Fourths', 'V-Neck T-shirt'
+    'Polo T-shirt', 'Trousers', 'Slim Fit Shirt', 'T-shirt', 'Jeans',
+    'Track Pants', 'Shorts', 'Printed Shirt', 'Printed T-shirt',
+    'Chinos', 'Joggers', 'pants', 'Jacket', 'Shackets', 'Pyjamas',
+    'Bermudas', 'Blazer', 'Hoodie', 'Sweatshirt', 'Pullovers', 'Kurta',
+    'Three-Fourths', 'V-Neck T-shirt'
   ];
 
   const womenCategories = 
@@ -53,6 +51,8 @@ const HeroSection = ({ handleSearch, suggestions }) => {
       'Sweaters & Cardigans', 'Dungarees', 'Skirts',
       'Hipsters', 'Swimsuit', 'Nightgown', 'Briefs'
   ];
+
+
 
   return (
     <MDBNavbar expand='lg' light bgColor='light' className="hero-section">
@@ -71,9 +71,8 @@ const HeroSection = ({ handleSearch, suggestions }) => {
         />
 
         <MDBCollapse navbar show={openBasic}>
-          {/* Navbar Links and Dropdowns Right-Aligned */}
           <MDBNavbarNav className='ms-auto mb-2 mb-lg-0 align-items-center'>
-            {/* Dropdown Men */}
+            {/* Men Categories */}
             <MDBNavbarItem>
               <MDBDropdown>
                 <MDBDropdownToggle tag='a' className='nav-link' role='button'>
@@ -85,14 +84,13 @@ const HeroSection = ({ handleSearch, suggestions }) => {
                       <MDBDropdownItem key={index} link>
                         <Link to={`/home/men/${category}`}>{category}</Link>
                       </MDBDropdownItem>
-                    
                     ))}
                   </div>
                 </MDBDropdownMenu>
               </MDBDropdown>
             </MDBNavbarItem>
 
-            {/* Dropdown Women */}
+            {/* Women Categories */}
             <MDBNavbarItem>
               <MDBDropdown>
                 <MDBDropdownToggle tag='a' className='nav-link' role='button'>
@@ -102,9 +100,8 @@ const HeroSection = ({ handleSearch, suggestions }) => {
                   <div className="dropdown-columns">
                     {womenCategories.map((category, index) => (
                       <MDBDropdownItem key={index} link>
-                      <Link to={`/home/women/${category}`}>{category}</Link>
-                    </MDBDropdownItem>
-                    
+                        <Link to={`/home/women/${category}`}>{category}</Link>
+                      </MDBDropdownItem>
                     ))}
                   </div>
                 </MDBDropdownMenu>
@@ -134,12 +131,14 @@ const HeroSection = ({ handleSearch, suggestions }) => {
               </form>
             </MDBNavbarItem>
 
-            {/* Profile Icon - Right Aligned */}
-            <MDBNavbarItem className="ms-3">
-              <Link to="/myprofile" className="nav-link">
-                <MDBIcon fas icon="user" size="lg" />
-              </Link>
-            </MDBNavbarItem>
+            {/* Profile Icon - Conditional rendering */}
+            {user_id && (
+              <MDBNavbarItem className="ms-3">
+                <Link to={`/myprofile/${user_id}`} className="nav-link">
+                  <MDBIcon fas icon="user" size="lg" />
+                </Link>
+              </MDBNavbarItem>
+            )}
           </MDBNavbarNav>
         </MDBCollapse>
       </MDBContainer>

@@ -21,7 +21,7 @@ function App() {
         <ProtectedRoute path="/me/" component={ProtectedRoute} />
         <ProtectedRoute path="/home" component={Home} />
         <ProtectedRoute path="/home/:gender/:taskId" component={TaskCard} />
-        <ProtectedRoute path="/myprofile" component={PersonalProfile} />
+        <ProtectedRoute path="/myprofile/:user_id" component={PersonalProfile} />
       </Switch>
     </Router>
   );

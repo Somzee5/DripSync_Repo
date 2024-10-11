@@ -1,15 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
+import api from '../utils/api'; 
+
 
 export default function PersonalProfile() {
-  // Demo data
-  const name = "Jane Doe";
-  const email = "jane.doe@example.com";
-  const skintone = "Light";
-  const height = "5'6\"";
-  const weight = "55 kg";
-  const age = 26;
-  const gender = "Female";
+  const { user_id } = useParams(); // Extract user ID from route
+  const [profile, setProfile] = useState({});
+  const [wardrobe, setWardrobe] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch user profile and wardrobe data based on user_id
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await api.get(`/myprofile/${user_id}`);
+        setProfile(response.data.profile); // Set the profile data
+        setWardrobe(response.data.wardrobe); // Set the wardrobe data
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+    fetchUserProfile();
+  }, [user_id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
@@ -19,17 +37,17 @@ export default function PersonalProfile() {
           <MDBCol lg="4" className="mb-4 mb-lg-0">
             <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
               <MDBRow className="g-0">
-                <MDBCol md="4" className="gradient-custom text-center text-white"
+                <MDBCol md="9" className="gradient-custom text-center text-white"
                   style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
                   <MDBCardImage 
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                    src={profile.captured_image ? `http://127.0.0.1:8000${profile.captured_image}` : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"}
                     alt="Avatar" 
                     className="my-5" 
                     style={{ width: '100px' }} 
                     fluid 
                   />
-                  <MDBTypography tag="h5">{name}</MDBTypography>
-                  <MDBCardText>Fashion Enthusiast</MDBCardText>
+                  <MDBTypography tag="h5">{profile.name}</MDBTypography>
+                  <MDBCardText>{profile.bio || 'Fashion Enthusiast'}</MDBCardText>
                   <MDBIcon far icon="edit" className="mb-5" />
                 </MDBCol>
                 <MDBCol md="8">
@@ -39,41 +57,35 @@ export default function PersonalProfile() {
                     <MDBRow className="pt-1">
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Email</MDBTypography>
-                        <MDBCardText className="text-muted">{email}</MDBCardText>
+                        <MDBCardText className="text-muted">{profile.email}</MDBCardText>
                       </MDBCol>
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Skintone</MDBTypography>
-                        <MDBCardText className="text-muted">{skintone}</MDBCardText>
+                        <MDBCardText className="text-muted">{profile.skin_tone}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
 
                     <MDBRow className="pt-1">
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Height</MDBTypography>
-                        <MDBCardText className="text-muted">{height}</MDBCardText>
+                        <MDBCardText className="text-muted">{profile.height}</MDBCardText>
                       </MDBCol>
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Weight</MDBTypography>
-                        <MDBCardText className="text-muted">{weight}</MDBCardText>
+                        <MDBCardText className="text-muted">{profile.weight}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
 
                     <MDBRow className="pt-1">
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Age</MDBTypography>
-                        <MDBCardText className="text-muted">{age}</MDBCardText>
+                        <MDBCardText className="text-muted">{profile.age}</MDBCardText>
                       </MDBCol>
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Gender</MDBTypography>
-                        <MDBCardText className="text-muted">{gender}</MDBCardText>
+                        <MDBCardText className="text-muted">{profile.gender}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
-
-                    <div className="d-flex justify-content-start mt-4">
-                      <a href="#!"><MDBIcon fab icon="facebook me-3" size="lg" /></a>
-                      <a href="#!"><MDBIcon fab icon="twitter me-3" size="lg" /></a>
-                      <a href="#!"><MDBIcon fab icon="instagram me-3" size="lg" /></a>
-                    </div>
                   </MDBCardBody>
                 </MDBCol>
               </MDBRow>
@@ -83,47 +95,32 @@ export default function PersonalProfile() {
           {/* Right: My Wardrobe Section */}
           <MDBCol lg="8">
             <MDBTypography tag="h5" className="mb-3">My Wardrobe (Wishlist)</MDBTypography>
-            
-            {/* Example Wishlist Card */}
-            <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
-              <MDBRow className="g-0 align-items-center">
-                <MDBCol md="4">
-                  <MDBCardImage src="https://example.com/product-image.jpg"
-                    alt="Wishlist Item" className="img-fluid" style={{ borderRadius: '.5rem', height: '100%' }} />
-                </MDBCol>
-                <MDBCol md="8">
-                  <MDBCardBody>
-                    <MDBTypography tag="h5">Product Name</MDBTypography>
-                    <MDBTypography tag="h6" className="text-muted">Brand</MDBTypography>
-                    <MDBCardText>$50.00</MDBCardText>
-                    <MDBCardText>
-                      <small className="text-muted">In stock</small>
-                    </MDBCardText>
-                  </MDBCardBody>
-                </MDBCol>
-              </MDBRow>
-            </MDBCard>
-
-            {/* Add more cards like this for additional products */}
-            <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
-              <MDBRow className="g-0 align-items-center">
-                <MDBCol md="4">
-                  <MDBCardImage src="https://example.com/another-product.jpg"
-                    alt="Wishlist Item" className="img-fluid" style={{ borderRadius: '.5rem', height: '100%' }} />
-                </MDBCol>
-                <MDBCol md="8">
-                  <MDBCardBody>
-                    <MDBTypography tag="h5">Another Product</MDBTypography>
-                    <MDBTypography tag="h6" className="text-muted">Another Brand</MDBTypography>
-                    <MDBCardText>$75.00</MDBCardText>
-                    <MDBCardText>
-                      <small className="text-muted">In stock</small>
-                    </MDBCardText>
-                  </MDBCardBody>
-                </MDBCol>
-              </MDBRow>
-            </MDBCard>
-
+            {wardrobe.length > 0 ? (
+              wardrobe.map((item) => (
+                <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }} key={item.Id_Product}>
+                  <MDBRow className="g-0 align-items-center">
+                    <MDBCol md="4">
+                      <MDBCardImage 
+                        src={item.URL_image || "https://via.placeholder.com/150"}
+                        alt="Wardrobe Item" 
+                        className="img-fluid" 
+                        style={{ borderRadius: '.5rem', height: '100%' }} 
+                      />
+                    </MDBCol>
+                    <MDBCol md="8">
+                      <MDBCardBody>
+                        <MDBTypography tag="h5">{item.Description}</MDBTypography>
+                        <MDBTypography tag="h6" className="text-muted">Price: ${item.Price}</MDBTypography>
+                        <MDBCardText><small className="text-muted">Added on: {new Date(item.added_date).toLocaleDateString()}</small></MDBCardText>
+                        <MDBCardText><small className="text-muted">Product URL: <a href={item.Product_URL} target="_blank" rel="noreferrer">{item.Product_URL}</a></small></MDBCardText>
+                      </MDBCardBody>
+                    </MDBCol>
+                  </MDBRow>
+                </MDBCard>
+              ))
+            ) : (
+              <MDBTypography tag="h6" className="text-muted">No items in wardrobe</MDBTypography>
+            )}
           </MDBCol>
         </MDBRow>
       </MDBContainer>

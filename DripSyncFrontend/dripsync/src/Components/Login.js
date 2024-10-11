@@ -25,9 +25,9 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post('/login/', { email, password });
-      const { access} = response.data;
+      const { access } = response.data;
       sessionStorage.setItem('access_token', access);
-      history.push(`/home`);
+      history.push('/home');
     } 
     catch (error) 
     {
@@ -53,7 +53,6 @@ const Login = () => {
         otp_input: otp,
         new_password: newPassword,
       });
-      // Reset state and redirect to login
       setEmail('');
       setOtp('');
       setNewPassword('');
@@ -65,8 +64,8 @@ const Login = () => {
   };
 
   return (
-    <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden'>
-      <MDBRow>
+    <MDBContainer fluid className='p-3 background-radial-gradient overflow-hidden'>
+      <MDBRow className="justify-content-center align-items-center">
         <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
           <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 95%)' }}>
             DripSync<br />
@@ -78,9 +77,8 @@ const Login = () => {
         </MDBCol>
 
         <MDBCol md='6' className='position-relative'>
-          <MDBCard className='my-5 bg-glass'>
-            <MDBCardBody className='p-5'>
-              {/* Sign-Up Button in the upper right corner */}
+          <MDBCard className='my-5 bg-glass' style={{ maxWidth: '500px', padding: '20px', margin: '0 auto' }}>
+            <MDBCardBody className='p-4'>
               <div className="d-flex justify-content-end mb-4">
                 <MDBBtn size='md' onClick={() => history.push('/register')}>
                   Sign Up
@@ -112,7 +110,6 @@ const Login = () => {
                     Log In
                   </MDBBtn>
 
-                  {/* Forgot Password and Text */}
                   <div className="text-center">
                     <p>Forgot your password? <span style={{ color: '#1266f1', cursor: 'pointer' }} onClick={handleForgotPassword}>Reset it</span></p>
                   </div>

@@ -83,7 +83,7 @@ from rest_framework.decorators import api_view, permission_classes
 
 
 
-
+ 
 
 
 from rest_framework import status
@@ -264,3 +264,34 @@ class VerifyOTPView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+from .models import Wardrobe
+from .serializers import WardrobeSerializer
+# Profile Showing view
+class MyProfileView(APIView):
+    def get(self, request, user_id):
+        try:
+            # Fetch the user profile by user_id
+            profile = Profile.objects.get(user__id=user_id)  # Ensure correct user_id lookup
+            wardrobe = Wardrobe.objects.filter(user__id=user_id)
+            
+            # Serialize the profile and wardrobe
+            profile_serializer = ProfileSerializer(profile)
+            wardrobe_serializer = WardrobeSerializer(wardrobe, many=True)
+
+            # Return both profile and wardrobe in the response
+            return Response({
+                'profile': profile_serializer.data,
+                'wardrobe': wardrobe_serializer.data
+            }, status=status.HTTP_200_OK)
+
+        except Profile.DoesNotExist:
+            return Response({'error': 'Profile not found.'}, status=status.HTTP_404_NOT_FOUND)        
+
+# view to provide user_id 
+class ProvideUserIDView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_id = request.user.id
+        return Response({'user_id': user_id})
+    

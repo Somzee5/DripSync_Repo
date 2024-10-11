@@ -1,15 +1,31 @@
-// pages/Home.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import HeroSection from '../Components/HeroSection';
 import ProductCard from '../Components/ProductCard';
+import api from '../utils/api';
 
 const Home = () => {
   const [suggestions, setSuggestions] = useState([]);
+  const [user_id, setUserID] = useState(null);
+
+  useEffect(() => {
+    // Fetch the user ID from the backend API
+    const fetchUserID = async () => {
+      try {
+        const response = await api.get('/home', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you're using token-based auth
+          },
+        });
+        setUserID(response.data.user_id); // Directly use response.data.user_id
+      } catch (error) {
+        console.error('Error fetching user ID:', error);
+      }
+    };
+    fetchUserID();
+  }, []);
 
   const handleSearch = (query) => {
-    // Logic to fetch search suggestions from backend based on query
-    // For now, let's just simulate with static data
     if (query.length > 1) {
       setSuggestions(['Suggestion 1', 'Suggestion 2', 'Suggestion 3']);
     } else {
@@ -22,10 +38,13 @@ const Home = () => {
     { name: 'Shirt', image: '/path/to/shirt.jpg', price: 120, discountedPrice: 95 }
   ];
 
+  // Ensure HeroSection is rendered only when user_id is available
   return (
     <MDBContainer fluid className="home-page">
       {/* Hero Section */}
-      <HeroSection handleSearch={handleSearch} suggestions={suggestions} />
+      {user_id && (
+        <HeroSection handleSearch={handleSearch} user_id={user_id} suggestions={suggestions} />
+      )}
 
       {/* Product Cards */}
       <MDBRow className="product-cards mt-5">

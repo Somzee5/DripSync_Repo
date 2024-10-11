@@ -40,14 +40,21 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source='user.email', read_only=True)  # Include email from related User model
 
     class Meta:
         model = Profile
-        fields = ['height', 'weight', 'age', 'gender', 'skin_tone', 'waist', 'captured_image']
+        fields = ['email','height', 'weight', 'age', 'gender', 'skin_tone', 'waist', 'captured_image']
 
     def create(self, validated_data):
         return Profile.objects.create(**validated_data)
 
+
+from .models import Wardrobe
+class WardrobeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wardrobe
+        fields = ['Id_Product', 'Product_URL', 'URL_image', 'Description', 'Price', 'added_date']
 
 
 
