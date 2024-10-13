@@ -1,0 +1,53 @@
+/* RelatedProducts.css */
+
+.related-products-container {
+    width: 80%; /* Adjust width to align with the main product */
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.related-products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between; /* Ensure even spacing between related products */
+}
+
+.related-product-card {
+    width: 28%; /* Smaller size compared to the main product */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.related-product-card:hover {
+    transform: scale(1.05);
+}
+
+.related-product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.learn-more-button {
+    margin-top: 8px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 6px 10px; /* Smaller button size to match the smaller product card */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.learn-more-button:hover {
+    background-color: #0056b3;
+}

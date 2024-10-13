@@ -1,9 +1,14 @@
 from flask import Flask, jsonify, request
 import pandas as pd
+import numpy as np
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
+similarity1 = np.load(r'D:\DripSync-MP\DripSync_Repo\Model Training\similarity_matrix_men.npy')
+similarity2 = np.load(r'D:\DripSync-MP\DripSync_Repo\Model Training\similarity_matrix_women.npy')
+
 
 def search_description(df, search_term):
     # Filter the DataFrame based on the search term
@@ -48,7 +53,7 @@ def get_product_details():
 
     if gender == 'men':
         df = pd.read_csv("Ajio_Men_Clothing_Updated.csv")
-    else:
+    elif gender=='women':
         df = pd.read_csv("Ajio_Women_Clothing_Updated.csv")
 
     # Try to convert the product_id to a number (int or float) to match the data type in the DataFrame
@@ -64,6 +69,46 @@ def get_product_details():
     else:
         return jsonify({"error": "Product not found"}), 404
 
+
+def recommend(df, outfit, gender):
+    if gender == 'men':
+        similarity = similarity1
+    elif gender == 'women':
+        similarity = similarity2
+   
+    outfit_indices = df[df['Id_Product'] == int(outfit)].index
+
+    # If outfit is not found, return an empty list
+    if outfit_indices.empty:
+        return []
+
+    outfit_index = outfit_indices[0]
+    distances = similarity[outfit_index]
+
+    # Get a list of tuples (index, distance), sorted by distance in descending order
+    outfits_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:7]  # Get top 6 related products
+
+    recommended_outfits = [df.iloc[i[0]].Id_Product for i in outfits_list]
+    return recommended_outfits
+
+
+@app.route('/get-related-products', methods=['GET'])
+def get_related_products():
+    product_id = request.args.get('product_id', '')
+    gender = request.args.get('gender', '')
+
+    if gender == 'men':
+        df = pd.read_csv("Ajio_Men_Clothing_Updated.csv")
+    elif gender=='women':
+        df = pd.read_csv("Ajio_Women_Clothing_Updated.csv")
+
+    related_product_ids = recommend(df, product_id, gender)
+
+    if related_product_ids:
+        related_products = df[df['Id_Product'].isin(related_product_ids)][['URL_image', 'Brand', 'Description', 'Id_Product','Category']].to_dict(orient='records')
+        return jsonify(related_products)
+    else:
+        return jsonify({"error": "No related products found"}), 404
 
 
 
