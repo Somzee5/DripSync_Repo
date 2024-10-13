@@ -1,73 +1,49 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import HeroSection from '../Components/HeroSection'; // Adjust the path based on your structure
-import './ProductDetail.css'; // Ensure you have this CSS file for styling
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import './ProductDetail.css';
 
 const ProductDetail = () => {
-  const { productId } = useParams();
+  const location = useLocation();
+  const path = location.pathname.split('/');
+  const gender = path[2];  // Assuming gender is at the 3rd position in the URL
+  const productId = path[4];  // Assuming productId is at the 5th position
 
-  // Demo product data
-  const demoProducts = [
-    {
-      id: '1',
-      name: 'Tapered Jeans',
-      description: 'Comfortable tapered jeans with a stylish fit, perfect for any occasion.',
-      price: '$49.99',
-      imageUrl: 'https://via.placeholder.com/400', // Placeholder image
-    },
-    {
-      id: '2',
-      name: 'Classic T-Shirt',
-      description: 'A classic cotton t-shirt, versatile for any wardrobe.',
-      price: '$19.99',
-      imageUrl: 'https://via.placeholder.com/400', // Placeholder image
-    },
-    {
-      id: '3',
-      name: 'Sporty Sneakers',
-      description: 'Trendy sneakers designed for both comfort and style.',
-      price: '$59.99',
-      imageUrl: 'https://via.placeholder.com/400', // Placeholder image
-    },
-  ];
+  const [product, setProduct] = useState(null);
 
-  // Find the product based on the productId
-  const product = demoProducts.find((p) => p.id === productId);
+  useEffect(() => {
+    fetchProductDetails();
+  }, [productId, gender]);
 
-  // Handle case where product is not found
+  const fetchProductDetails = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/get-product-details?product_id=${productId}&gender=${gender}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setProduct(data);
+      console.log('Fetched product:', data); // Debugging log
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+    }
+  };
+
   if (!product) {
-    return <div>Product not found!</div>;
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="product-detail-page">
-      <HeroSection /> {/* Use your existing HeroSection component */}
-      <div className="product-detail-container">
-        <div className="product-image">
-          <img src={product.imageUrl} alt={product.name} />
-        </div>
-        <div className="product-info">
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
-          <h3>{product.price}</h3>
-          <div className="button-container">
-            <button className="buy-now-button">Buy Now</button>
-            <button className="try-on-button">Try On</button>
-          </div>
-        </div>
-      </div>
-      <div className="recommendations">
-        <h2>You might also like:</h2>
-        <div className="recommendation-cards">
-          {demoProducts.map((recProduct) => (
-            <div key={recProduct.id} className="recommendation-card">
-              <img src={recProduct.imageUrl} alt={recProduct.name} />
-              <h3>{recProduct.name}</h3>
-              <p>{recProduct.price}</p>
-              <button className="view-details-button">View Details</button>
-            </div>
-          ))}
-        </div>
+    <div className="product-detail-container">
+      <div className="product-detail-card">
+        <img src={product.URL_image} alt={product.Brand} className="product-image" />
+        <h2>{product.Brand}</h2>
+        <p>{product.Description}</p>
+        <p><strong>Category:</strong> {product.Category}</p>
+        <p><strong>Discount Price:</strong> Rs. {product['Discount Price (in Rs.)']}</p>
+        <p><strong>Original Price:</strong> Rs. {product['Original Price (in Rs.)']}</p>
+        <p><strong>Color:</strong> {product.Color}</p>
+        <p><strong>Wear Type:</strong> {product.Wear_Type}</p>
+        <a href={product.Product_URL} target="_blank" rel="noopener noreferrer" className="product-link">Buy Now</a>
       </div>
     </div>
   );

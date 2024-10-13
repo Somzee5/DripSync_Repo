@@ -1,101 +1,41 @@
-.product-detail-page {
-  padding: 20px;
-}
+/* ProductDetail.css */
 
 .product-detail-container {
   display: flex;
-  margin-top: 20px;
+  flex-direction: column; /* Stack the main product on top and related products below */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.product-detail-card {
+  background: #fff;
+  padding: 30px; /* Increased padding to make it stand out more */
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for emphasis */
+  max-width: 700px; /* Increased max width to make the main product larger */
+  margin-bottom: 30px; /* Space between the main product and the related products */
+  text-align: center;
 }
 
 .product-image {
-  flex: 2; /* Makes image take more space */
-  margin-right: 20px;
+  width: 90%; /* Slightly reduced to give more margin */
+  height: auto;
+  border-radius: 8px;
 }
 
-.product-image img {
-  width: 100%; /* Responsive image */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 10px; /* Rounded corners */
-}
-
-.product-info {
-  flex: 3; /* Makes info take more space */
-}
-
-.product-info h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.product-info p {
-  margin: 10px 0;
-}
-
-.button-container {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.buy-now-button, .try-on-button, .view-details-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.buy-now-button {
-  background-color: #28a745;
-  color: white;
-}
-
-.try-on-button {
+.product-link {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 24px; /* Increased padding for a more prominent button */
   background-color: #007bff;
-  color: white;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1.1em; /* Slightly larger font for emphasis */
 }
 
-.view-details-button {
-  background-color: #6c757d;
-  color: white;
-}
-
-.buy-now-button:hover {
-  background-color: #218838;
-}
-
-.try-on-button:hover {
+.product-link:hover {
   background-color: #0056b3;
-}
-
-.recommendations {
-  margin-top: 40px;
-}
-
-.recommendation-cards {
-  display: flex;
-  justify-content: space-between; /* Space between cards */
-  flex-wrap: wrap; /* Allow cards to wrap */
-}
-
-.recommendation-card {
-  background-color: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 10px;
-  width: 200px; /* Fixed width for cards */
-  margin-right: 20px;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-}
-
-.recommendation-card:hover {
-  transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-.recommendation-card img {
-  width: 100%; /* Responsive image for cards */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 10px; /* Rounded corners */
 }

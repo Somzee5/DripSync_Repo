@@ -5,10 +5,10 @@ import VerifyOtp from './Components/VerifyOtp';
 import Signup from './Components/Signup';
 import Profile from './Components/Profile';
 import ProtectedRoute from './Components/ProtectedRoute';
-// import Home from './Components/Home';
 import Home from './Pages/Home';
 import PersonalProfile from './Pages/PersonalProfile';
-import TaskCard from './Components/ProductCard';
+import ProductCard from './Components/ProductCard';
+import ProductDetail from './Pages/ProductDetail';
 
 function App() {
   return (
@@ -19,8 +19,9 @@ function App() {
         <Route path="/register" component={Signup} />
         <ProtectedRoute path="/profile/:user_id" component={Profile} />
         <ProtectedRoute path="/me/" component={ProtectedRoute} />
-        <ProtectedRoute path="/home" component={Home} />
-        <ProtectedRoute path="/home/:gender/:taskId" component={TaskCard} />
+        <ProtectedRoute exact path="/home" component={Home} />
+        <ProtectedRoute exact path="/home/:gender/:taskId" component={ProductCard} />
+        <ProtectedRoute exact path="/home/:gender/:subcategory/:productId" component={ProductDetail} />
         <ProtectedRoute path="/myprofile/:user_id" component={PersonalProfile} />
       </Switch>
     </Router>

@@ -30,13 +30,44 @@ def get_data():
 
     # Search the description in the DataFrame
     new_df = search_description(df, search_term)
-    new_df = new_df[['URL_image', 'Brand', 'Description']]
+    new_df = new_df[['URL_image', 'Brand', 'Description', 'Id_Product']]
 
     # Convert the filtered DataFrame to a dictionary format
     data = new_df.to_dict(orient='records')
 
     # Return the data as a JSON response
     return jsonify(data)
+
+
+
+
+@app.route('/get-product-details', methods=['GET'])
+def get_product_details():
+    product_id = request.args.get('product_id', '')
+    gender = request.args.get('gender', '')
+
+    if gender == 'men':
+        df = pd.read_csv("Ajio_Men_Clothing_Updated.csv")
+    else:
+        df = pd.read_csv("Ajio_Women_Clothing_Updated.csv")
+
+    # Try to convert the product_id to a number (int or float) to match the data type in the DataFrame
+    try:
+        product_id = int(product_id)  # Convert to int if Id_Product is stored as an integer
+    except ValueError:
+        return jsonify({"error": "Invalid product ID format"}), 400
+
+    product = df[df['Id_Product'] == product_id].to_dict(orient='records')
+
+    if product:
+        return jsonify(product[0])  # Return the first matching product
+    else:
+        return jsonify({"error": "Product not found"}), 404
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
