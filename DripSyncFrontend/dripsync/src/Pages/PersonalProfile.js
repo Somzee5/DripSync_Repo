@@ -34,8 +34,8 @@ export default function PersonalProfile() {
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-start h-100">
           {/* Left: Profile Information */}
-          <MDBCol lg="4" className="mb-4 mb-lg-0">
-            <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
+          <MDBCol lg="5" className="mb-4 mb-lg-0"> {/* Changed lg from 4 to 5 */}
+            <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }}> {/* Added width: 100% */}
               <MDBRow className="g-0">
                 <MDBCol md="9" className="gradient-custom text-center text-white"
                   style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
@@ -93,11 +93,11 @@ export default function PersonalProfile() {
           </MDBCol>
 
           {/* Right: My Wardrobe Section */}
-          <MDBCol lg="8">
+          <MDBCol lg="7"> {/* Changed lg from 8 to 7 */}
             <MDBTypography tag="h5" className="mb-3">My Wardrobe (Wishlist)</MDBTypography>
             {wardrobe.length > 0 ? (
               wardrobe.map((item) => (
-                <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }} key={item.Id_Product}>
+                <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }} key={item.Id_Product}> {/* Added width: 100% */}
                   <MDBRow className="g-0 align-items-center">
                     <MDBCol md="4">
                       <MDBCardImage 

@@ -77,7 +77,7 @@ const Login = () => {
         </MDBCol>
 
         <MDBCol md='6' className='position-relative'>
-          <MDBCard className='my-5 bg-glass' style={{ maxWidth: '500px', padding: '20px', margin: '0 auto' }}>
+          <MDBCard className='my-5 bg-glass' style={{ maxWidth: '600px', width: '600px', padding: '20px', margin: '0 auto' }}>
             <MDBCardBody className='p-4'>
               <div className="d-flex justify-content-end mb-4">
                 <MDBBtn size='md' onClick={() => history.push('/register')}>

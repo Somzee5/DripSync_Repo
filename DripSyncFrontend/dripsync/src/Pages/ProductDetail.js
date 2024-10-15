@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import './ProductDetail.css';
 import './RelatedProduct.css';
+import HeroSection from '../Components/HeroSection'; // Importing HeroSection
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -60,6 +61,7 @@ const ProductDetail = () => {
 
   return (
     <div className="product-detail-container">
+      <HeroSection /> {/* Include HeroSection here */}
       <div className="product-detail-card">
         <img src={product.URL_image} alt={product.Brand} className="product-image" />
         <h2>{product.Brand}</h2>

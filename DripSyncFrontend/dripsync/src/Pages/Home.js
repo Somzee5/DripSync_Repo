@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import HeroSection from '../Components/HeroSection';
-import ProductCard from '../Components/ProductCard';
+import TaskCard from '../Components/ProductCard';
 import api from '../utils/api';
 
 const Home = () => {
@@ -46,14 +46,14 @@ const Home = () => {
         <HeroSection handleSearch={handleSearch} user_id={user_id} suggestions={suggestions} />
       )}
 
-      {/* Product Cards */}
+      {/* Product Cards
       <MDBRow className="product-cards mt-5">
         {products.map((product, index) => (
           <MDBCol md="9" key={index}>
-            <ProductCard product={product} />
+            <TaskCard product={product} />
           </MDBCol>
         ))}
-      </MDBRow>
+      </MDBRow> */}
     </MDBContainer>
   );
 };

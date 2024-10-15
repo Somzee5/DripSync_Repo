@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import api from '../utils/api'; // Assuming you're using the api utility for HTTP requests
+import api from '../utils/api';
 import {
   MDBBtn,
   MDBContainer,
@@ -15,7 +15,6 @@ import {
 const Signup = () => {
   const history = useHistory();
 
-  // State management for form fields
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -27,7 +26,6 @@ const Signup = () => {
 
   const [error, setError] = useState('');
 
-  // Handle input changes
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -35,18 +33,16 @@ const Signup = () => {
     });
   };
 
-  // Handle checkbox toggle
   const handleCheckboxChange = (e) => {
     setFormData({
       ...formData,
-      termsAccepted: e.target.checked 
+      termsAccepted: e.target.checked
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.termsAccepted) {
       setError('You must accept the terms and conditions.');
       return;
@@ -58,7 +54,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await api.post('/register/', {  // Fixed path
+      const response = await api.post('/register/', {
         firstname: formData.firstName,
         lastname: formData.lastName,
         email: formData.email,
@@ -70,10 +66,7 @@ const Signup = () => {
       const { access, user_id } = response.data;
       sessionStorage.setItem('access_token', access);
       history.push(`/profile/${user_id}`);
-
-    } 
-    catch (err) 
-    {
+    } catch (err) {
       console.error(err);
       setError('An error occurred during registration. Please try again.');
     }
@@ -85,20 +78,22 @@ const Signup = () => {
 
   return (
     <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden'>
-      <MDBRow>
-        <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
-          <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{color: 'hsl(218, 81%, 95%)'}}>
+      <MDBRow className="justify-content-center align-items-center">
+        {/* DripSync Welcome Text on the Left */}
+        <MDBCol md='3' className='text-center text-md-start d-flex flex-column justify-content-center'>
+          <h1 className="my-5 display-3 fw-bold ls-tight px-4" style={{color: 'hsl(218, 81%, 95%)'}}>
             DripSync<br />
             <span style={{color: 'hsl(218, 81%, 75%)'}}>outfits for you!</span>
           </h1>
-          <p className='px-3' style={{color: 'hsl(218, 81%, 85%)'}}>
+          <p className='px-4' style={{color: 'hsl(218, 81%, 85%)'}}>
             DripSync today to unlock personalized outfit suggestions tailored to your style and body type. Create your profile and start your fashion journey with AI-powered recommendations.
           </p>
         </MDBCol>
 
-        <MDBCol md='6' className='position-relative'>
-          <MDBCard className='my-5 bg-glass'>
-            <MDBCardBody className='p-5'>
+        {/* Signup Form Card */}
+        <MDBCol md='9' className='position-relative'>
+          <MDBCard className='my-5 bg-glass' style={{ maxWidth: '800px', padding: '30px', margin: '20px auto' }}>
+            <MDBCardBody className='p-4'>
               <form onSubmit={handleSubmit}>
                 <MDBRow>
                   <MDBCol col='6'>
@@ -166,14 +161,12 @@ const Signup = () => {
                   Already have an account? <span style={{color: '#1266f1', cursor: 'pointer'}} onClick={handleLoginClick}>Log In</span>
                 </p>
               </form>
-
-              
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
       </MDBRow>
     </MDBContainer>
   );
-}
+};
 
 export default Signup;

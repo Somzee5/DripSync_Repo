@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import './ProductCard.css';
+import HeroSection from './HeroSection'; // Import HeroSection
 
 const ProductCard = () => {
   const path = window.location.pathname.split('/');
-  const gender = path[2];  // Assuming it's at the 3rd position
-  const taskId = path[3];  // Assuming it's at the 4th position
+  const gender = path[2];
+  const taskId = path[3];
 
   const [cards, setCards] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [subcategory, setSubcategory] = useState('');
 
   useEffect(() => {
-    setSearchTerm(taskId);  // Set taskId as searchTerm
-    fetchData(gender, taskId);  // Fetch data based on gender and taskId
+    setSearchTerm(taskId);
+    fetchData(gender, taskId);
   }, [gender, taskId]);
 
   const fetchData = async (gen, subcategory) => {
@@ -33,23 +34,16 @@ const ProductCard = () => {
   const renderCards = () => {
     const rows = [];
     for (let i = 0; i < cards.length; i += 3) {
-      const rowItems = cards.slice(i, i + 3); // Get a row of three items
+      const rowItems = cards.slice(i, i + 3);
       rows.push(
         <div className="card-row" key={`row-${i}`}>
           {rowItems.map((item, index) => (
             <MDBCard className="card" key={`card-${i + index}`}>
               <MDBCardBody>
-                <img
-                  src={item.URL_image}
-                  alt={item.Brand}
-                  className="card-image"
-                />
+                <img src={item.URL_image} alt={item.Brand} className="card-image" />
                 <h2>{item.Brand}</h2>
                 <p>{item.Description}</p>
-                <Link 
-                  to={`/home/${gender}/${taskId}/${item.Id_Product}`} // Ensure taskId is always included
-                  className="card-button"
-                >
+                <Link to={`/home/${gender}/${taskId}/${item.Id_Product}`} className="card-button">
                   Learn More
                 </Link>
               </MDBCardBody>
@@ -62,9 +56,12 @@ const ProductCard = () => {
   };
 
   return (
-    <div className="card-container">
-      {cards.length > 0 ? renderCards() : <div>No cards available!</div>}
-    </div>
+    <>
+      <HeroSection /> {/* Render the navbar on top of this page */}
+      <div className="card-container">
+        {cards.length > 0 ? renderCards() : <div>No cards available!</div>}
+      </div>
+    </>
   );
 };
 

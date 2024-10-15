@@ -3,8 +3,8 @@
 .product-detail-container {
   display: flex;
   flex-direction: column; /* Stack the main product on top and related products below */
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start; /* Align items to the top */
+  align-items: center; /* Center align items horizontally */
   min-height: 100vh;
   background-color: #f4f4f4;
 }
@@ -15,7 +15,7 @@
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for emphasis */
   max-width: 700px; /* Increased max width to make the main product larger */
-  margin-bottom: 30px; /* Space between the main product and the related products */
+  margin: 30px 0; /* Space above and below the main product */
   text-align: center;
 }
 
