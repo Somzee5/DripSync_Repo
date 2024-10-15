@@ -297,13 +297,26 @@ class ProvideUserIDView(APIView):
         user_id = request.user.id
 
         try:
-            # Access the user's profile to get the gender
-            gender = request.user.profile.get_gender_display()  # This will give the full display value (e.g., 'Male' or 'Female')
+            # Access the user's profile to get the gender, height, weight, and waist
+            profile = request.user.profile
+            gender = profile.get_gender_display()  # Full display value (e.g., 'Male' or 'Female')
+            height = profile.height  # Assuming height is a field in the Profile model
+            weight = profile.weight  # Assuming weight is a field in the Profile model
+            waist = profile.waist  # Assuming waist is a field in the Profile model
+            skintone = profile.skin_tone
         except Profile.DoesNotExist:
             return Response({'error': 'Profile not found'}, status=404)
 
-        # Return both user_id and gender in the response
-        return Response({'user_id': user_id, 'gender': gender})
+        # Return user_id, gender, height, weight, and waist in the response
+        return Response({
+            'user_id': user_id,
+            'gender': gender,
+            'height': height,
+            'weight': weight,
+            'waist': waist,
+            'skintone': skintone,
+        })
+
     
 
 

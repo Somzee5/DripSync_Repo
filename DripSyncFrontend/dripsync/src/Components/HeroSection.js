@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MDBContainer,
   MDBNavbar,
@@ -15,16 +15,28 @@ import {
   MDBInput,
   MDBBtn,
 } from 'mdb-react-ui-kit';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { Link, useHistory } from 'react-router-dom';
 import './HeroSection.css';
-import { useHistory } from 'react-router-dom';
 
-const HeroSection = ({ user_id, gender }) => {
+const HeroSection = ({ user_id, gender, height, weight, waist, skintone }) => {
   const history = useHistory();
   const [openBasic, setOpenBasic] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [personalizedCategories, setPersonalizedCategories] = useState([]);
 
+  // Effect for fetching personalized categories when any of the parameters change
+  useEffect(() => {
+    if (gender && height && weight && waist && skintone) {
+      fetchPersonalizedCategories();
+    }
+  }, [gender, height, weight, waist, skintone]);
+
+  useEffect(() => {
+    console.log('Personalized Categories State:', personalizedCategories);
+  }, [personalizedCategories]);
+
+  // Fetch search suggestions based on search term
   const fetchSuggestions = async () => {
     try {
       const response = await fetch(`http://127.0.0.1:5000/get-suggestions?search_term=${searchQuery}&gender=${gender}`);
@@ -39,14 +51,37 @@ const HeroSection = ({ user_id, gender }) => {
     }
   };
 
-  const handleSearchBar = () => {
+  // Fetch personalized categories
+  const fetchPersonalizedCategories = async () => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/get-personalized-categories?gender=${gender}&height=${height}&weight=${weight}&waist=${waist}&skintone=${skintone}`
+      );
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Network response was not ok');
+      }
+      const data = await response.json();
+      setPersonalizedCategories(data);
+    } catch (error) {
+      console.error('Error fetching personalized categories:', error);
+      setPersonalizedCategories([]); // Clear personalized categories on error
+    }
+  };
+
+  // Handle search form submission
+  const handleSearchBar = (e) => {
+    e.preventDefault();
+    if (searchQuery) {
+      fetchSuggestions();
+    }
     history.push(`/home/${gender}/${searchQuery}`);
   };
 
+  // Render suggestions
   const renderSuggestions = () => {
-    // Ensure that suggestions is an array
     if (!Array.isArray(suggestions) || suggestions.length === 0) {
-      return <div>No suggestions available.</div>; // Fallback UI
+      return <div>No suggestions available.</div>;
     }
 
     return suggestions.map((suggestion, index) => (
@@ -58,16 +93,28 @@ const HeroSection = ({ user_id, gender }) => {
     ));
   };
 
-  const menCategories = [
-    'Polo T-shirt', 'Trousers', 'Slim Fit Shirt', 'T-shirt', 'Jeans',
+  // Render personalized categories
+  const renderPersonalizedCategories = () => {
+    if (!Array.isArray(personalizedCategories) || personalizedCategories.length === 0) {
+      return <div>No personalized categories available.</div>;
+    }
+
+    return personalizedCategories.map((category, index) => (
+      <div key={index}>
+        <Link to={`/home/recommended/${category}`} className="category-item">
+          {category}
+        </Link>
+      </div>
+    ));
+  };
+
+  // Define men and women categories
+  const menCategories = ['Polo T-shirt', 'Trousers', 'Slim Fit Shirt', 'T-shirt', 'Jeans',
     'Track Pants', 'Shorts', 'Printed Shirt', 'Printed T-shirt',
     'Chinos', 'Joggers', 'pants', 'Jacket', 'Shackets', 'Pyjamas',
     'Bermudas', 'Blazer', 'Hoodie', 'Sweatshirt', 'Pullovers', 'Kurta',
-    'Three-Fourths', 'V-Neck T-shirt'
-  ];
-
-  const womenCategories = [
-    'Kurtas', 'Kurta Suit Sets', 'Leggings', 'Flared',
+    'Three-Fourths', 'V-Neck T-shirt'];
+  const womenCategories = ['Kurtas', 'Kurta Suit Sets', 'Leggings', 'Flared',
     'Salwars & Churidars', 'Printed', 'Jeans & Jeggings',
     'Track Pants', 'Tops', 'T-Shirts', 'Trousers & Pants',
     'Dress Material', 'Camisole', 'Joggers', 'Treggings', 'Shirts',
@@ -77,8 +124,7 @@ const HeroSection = ({ user_id, gender }) => {
     'Jackets & Coats', 'Tights', 'Kurtis & Tunics', 'Gown', 'Dupatta',
     'Blouses', 'Shrugs & Boleros', 'Shawls & Wraps',
     'Sweaters & Cardigans', 'Dungarees', 'Skirts',
-    'Hipsters', 'Swimsuit', 'Nightgown', 'Briefs'
-  ];
+    'Hipsters', 'Swimsuit', 'Nightgown', 'Briefs'];
 
   return (
     <MDBNavbar expand='lg' light bgColor='light' className="hero-section">
@@ -142,11 +188,7 @@ const HeroSection = ({ user_id, gender }) => {
                 </MDBDropdownToggle>
                 <MDBDropdownMenu className="category-dropdown">
                   <div className="dropdown-columns">
-                    {womenCategories.map((category, index) => (
-                      <MDBDropdownItem key={index} link>
-                        <Link to={`/home/recommended/${category}`}>{category}</Link>
-                      </MDBDropdownItem>
-                    ))}
+                    {renderPersonalizedCategories()}
                   </div>
                 </MDBDropdownMenu>
               </MDBDropdown>
@@ -154,15 +196,13 @@ const HeroSection = ({ user_id, gender }) => {
 
             {/* Search Bar */}
             <MDBNavbarItem className="search-container ms-3">
-              <form className='d-flex input-group w-auto position-relative' onSubmit={(e) => { e.preventDefault(); fetchSuggestions(); }}>
+              <form className='d-flex input-group w-auto position-relative' onSubmit={handleSearchBar}>
                 <MDBInput
                   label='Search for products...'
                   id='search'
                   type='text'
                   value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                  }}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="search-input"
                   onKeyUp={fetchSuggestions} // Fetch suggestions on keyup
                 />
