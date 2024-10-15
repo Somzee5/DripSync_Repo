@@ -7,8 +7,9 @@ import api from '../utils/api';
 const Home = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [user_id, setUserID] = useState(null);
+  const [gender, setGender] = useState(null);
 
-  useEffect(() => {
+  useEffect(() => { 
     // Fetch the user ID from the backend API
     const fetchUserID = async () => {
       try {
@@ -18,6 +19,10 @@ const Home = () => {
           },
         });
         setUserID(response.data.user_id); // Directly use response.data.user_id
+        if(response.data.gender === 'Male')
+          setGender('men');
+        else  
+          setGender('women');
       } catch (error) {
         console.error('Error fetching user ID:', error);
       }
@@ -43,7 +48,7 @@ const Home = () => {
     <MDBContainer fluid className="home-page">
       {/* Hero Section */}
       {user_id && (
-        <HeroSection handleSearch={handleSearch} user_id={user_id} suggestions={suggestions} />
+        <HeroSection handleSearch={handleSearch} user_id={user_id} gender={gender} suggestions={suggestions} />
       )}
 
       {/* Product Cards

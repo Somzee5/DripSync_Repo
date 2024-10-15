@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import './ProductDetail.css';
-import './RelatedProduct.css';
-import HeroSection from '../Components/HeroSection'; // Importing HeroSection
+import { useLocation, useHistory, useParams } from 'react-router-dom';
+import HeroSection from '../Components/HeroSection'; // Adjust the path based on your structure
 import api from '../utils/api'; // Make sure to import your api utility for requests
+import './ProductDetail.css'; // Ensure you have this CSS file for styling
 
 const ProductDetail = () => {
+  const { productId } = useParams();
   const location = useLocation();
   const path = location.pathname.split('/');
   const gender = path[2];  // Assuming gender is at the 3rd position in the URL
-  const productId = path[4];  // Assuming productId is at the 5th position
   const history = useHistory();
 
   const [product, setProduct] = useState(null);
@@ -20,10 +19,9 @@ const ProductDetail = () => {
     fetchRelatedProducts();
   }, [productId, gender]);
 
-  // Scroll to the top of the page when the component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [productId]); // Runs every time productId changes
+  }, [productId]);
 
   const fetchProductDetails = async () => {
     try {
@@ -33,7 +31,6 @@ const ProductDetail = () => {
       }
       const data = await response.json();
       setProduct(data);
-      console.log('Fetched product:', data); // Debugging log
     } catch (error) {
       console.error('Error fetching product details:', error);
     }
@@ -56,73 +53,76 @@ const ProductDetail = () => {
     history.push(`/home/${gender}/${relatedProductCategory}/${relatedProductId}`);
   };
 
-  // Method to add the product into the wardrobe
   const addToWardrobe = async () => {
-    const userId = sessionStorage.getItem('user_id'); // Get user_id from sessionStorage
+    const userId = sessionStorage.getItem('user_id');
 
     const data = {
-        user: userId,
-        Id_Product: product.Id_Product,
-        Product_URL: product.Product_URL,
-        URL_image: product.URL_image,
-        Description: product.Description,
-        Price: product['Original Price (in Rs.)'],
-        added_date: new Date().toISOString(),
-        // No need to include the user_id here; it's handled in the backend
+      user: userId,
+      Id_Product: product.Id_Product,
+      Product_URL: product.Product_URL,
+      URL_image: product.URL_image,
+      Description: product.Description,
+      Price: product['Original Price (in Rs.)'],
+      added_date: new Date().toISOString(),
     };
 
     try {
-        // Ensure to use the correct endpoint, make sure it matches your backend
-        const response = await api.post('/wardrobe/', data, {
-            headers: {
-                'Content-Type': 'application/json', // Specify content type
-                Authorization: `Bearer ${sessionStorage.getItem('access_token')}`, // Ensure correct token key
-            },
-        });
-        alert('Product added to wardrobe successfully!');
+      const response = await api.post('/wardrobe/', data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
+        },
+      });
+      alert('Product added to wardrobe successfully!');
     } catch (error) {
-        console.error('Error adding to wardrobe:', error);
-        alert('Failed to add to wardrobe. Please try again.');
-        if (error.response) {
-            console.error('Response error data:', error.response.data); // Log detailed error response
-        }
+      console.error('Error adding to wardrobe:', error);
+      alert('Failed to add to wardrobe. Please try again.');
     }
-};
-
+  };
 
   if (!product) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="product-detail-container">
-      <HeroSection /> {/* Include HeroSection here */}
-      <div className="product-detail-card">
-        <img src={product.URL_image} alt={product.Brand} className="product-image" />
-        <h2>{product.Brand}</h2>
-        <p>{product.Description}</p>
-        <p><strong>Category:</strong> {product.Category}</p>
-        <p><strong>Discount Price:</strong> Rs. {product['Discount Price (in Rs.)']}</p>
-        <p><strong>Original Price:</strong> Rs. {product['Original Price (in Rs.)']}</p>
-        <p><strong>Color:</strong> {product.Color}</p>
-        <p><strong>Wear Type:</strong> {product.Wear_Type}</p>
-        <a href={product.Product_URL} target="_blank" rel="noopener noreferrer" className="product-link">Buy Now</a>
-        <button onClick={addToWardrobe} className="add-to-wardrobe-button">Add to Wardrobe</button> {/* Add to wardrobe button */}
+    <div className="product-detail-page">
+      <HeroSection />
+      <div className="product-detail-container">
+        <div className="product-image">
+          <img src={product.URL_image} alt={product.Brand} />
+        </div>
+        <div className="product-info">
+          <h1 className="product-name">{product.Brand}</h1>
+          <p className="product-description">{product.Description}</p>
+          <p className="product-category"><strong>Category:</strong> {product.Category}</p>
+          <p className="product-color"><strong>Color:</strong> {product.Color}</p>
+          <p className="product-wear-type"><strong>Wear Type:</strong> {product.Wear_Type}</p>
+          <div className="price-section">
+            <span className="discounted-price">Rs. {product['Discount Price (in Rs.)']}</span>
+            <span className="original-price"><s>Rs. {product['Original Price (in Rs.)']}</s></span>
+          </div>
+          <div className="button-container">
+            <a href={product.Product_URL} target="_blank" rel="noopener noreferrer">
+              <button className="buy-now-button">Buy Now</button>
+            </a>
+            <button onClick={addToWardrobe} className="add-to-wardrobe-button">Add to Wardrobe</button>
+            <button className="try-on-button">Try On</button>
+          </div>
+        </div>
       </div>
-
-      <div className="related-products-container">
-        <h3>Related Products</h3>
-        <div className="related-products-grid">
+      <div className="recommendations">
+        <h2>You might also like:</h2>
+        <div className="recommendation-cards">
           {relatedProducts.map((relatedProduct) => (
-            <div key={relatedProduct.Id_Product} className="related-product-card">
-              <img src={relatedProduct.URL_image} alt={relatedProduct.Brand} className="related-product-image" />
-              <h4>{relatedProduct.Brand}</h4>
-              <p>{relatedProduct.Description}</p>
+            <div key={relatedProduct.Id_Product} className="recommendation-card">
+              <img src={relatedProduct.URL_image} alt={relatedProduct.Brand} />
+              <h3>{relatedProduct.Brand}</h3>
+              <p>{relatedProduct['Discount Price (in Rs.)']}</p>
               <button
-                className="learn-more-button"
+                className="view-details-button"
                 onClick={() => handleLearnMoreClick(relatedProduct.Id_Product, relatedProduct.Category)}
               >
-                Learn More
+                View Details
               </button>
             </div>
           ))}

@@ -21,7 +21,7 @@ const Profile = () => {
     weight: '',
     waist: '',
     gender: 'M',
-    skin_tone: 'LT',
+    skin_tone: 'EF',
     captured_image: null, // For file upload, store the file here
   });
 
@@ -66,114 +66,119 @@ const Profile = () => {
 
   return (
     <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden'>
-      <MDBRow>
-        <MDBCol md='6' className='offset-md-3 position-relative'>
-          <MDBCard className='my-5 bg-glass'>
-            <MDBCardBody className='p-5'>
-              <h1 className='text-center mb-4'>Create Profile</h1>
-              <form onSubmit={handleSubmit}>
-                {/* Age Input */}
-                <MDBInput
-                  wrapperClass='mb-4'
-                  label='Age'
-                  id='age'
-                  type='number'
-                  name='age'
-                  value={profileData.age}
-                  onChange={handleInputChange}
-                  required
-                />
+  <MDBRow className="justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+    <MDBCol md='6' lg='9' className='position-relative'>
+      <MDBCard className='my-5 bg-glass'>
+        <MDBCardBody className='p-5'>
+          <h1 className='text-center mb-4'>Create Profile</h1>
+          <form onSubmit={handleSubmit}>
+            {/* Age Input */}
+            <MDBInput
+              wrapperClass='mb-4'
+              label='Age'
+              id='age'
+              type='number'
+              name='age'
+              value={profileData.age}
+              onChange={handleInputChange}
+              required
+            />
 
-                {/* Height Input */}
-                <MDBInput
-                  wrapperClass='mb-4'
-                  label='Height (in cm)'
-                  id='height'
-                  type='number'
-                  name='height'
-                  value={profileData.height}
-                  onChange={handleInputChange}
-                  required
-                />
+            {/* Height Input */}
+            <MDBInput
+              wrapperClass='mb-4'
+              label='Height (in cm)'
+              id='height'
+              type='number'
+              name='height'
+              value={profileData.height}
+              onChange={handleInputChange}
+              required
+            />
 
-                {/* Weight Input */}
-                <MDBInput
-                  wrapperClass='mb-4'
-                  label='Weight (in kg)'
-                  id='weight'
-                  type='number'
-                  name='weight'
-                  value={profileData.weight}
-                  onChange={handleInputChange}
-                  required
-                />
+            {/* Weight Input */}
+            <MDBInput
+              wrapperClass='mb-4'
+              label='Weight (in kg)'
+              id='weight'
+              type='number'
+              name='weight'
+              value={profileData.weight}
+              onChange={handleInputChange}
+              required
+            />
 
-                {/* Waist Input */}
-                <MDBInput
-                  wrapperClass='mb-4'
-                  label='Waist Size (in cm)'
-                  id='waist'
-                  type='number'
-                  name='waist'
-                  value={profileData.waist}
-                  onChange={handleInputChange}
-                  required
-                />
+            {/* Waist Input */}
+            <MDBInput
+              wrapperClass='mb-4'
+              label='Waist Size (in cm)'
+              id='waist'
+              type='number'
+              name='waist'
+              value={profileData.waist}
+              onChange={handleInputChange}
+              required
+            />
 
-                {/* Gender Select */}
-                <div className='mb-4'>
-                  <label className='form-label'>Gender</label>
-                  <select
-                    className='form-select'
-                    name='gender'
-                    value={profileData.gender}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    <option value='M'>Male</option>
-                    <option value='F'>Female</option>
-                    {/* You can add more options if needed */}
-                  </select>
-                </div>
+            {/* Gender Select */}
+            <div className='mb-4'>
+              <label className='form-label'>Gender</label>
+              <select
+                className='form-select'
+                name='gender'
+                value={profileData.gender}
+                onChange={handleInputChange}
+                required
+              >
+                <option value='M'>Male</option>
+                <option value='F'>Female</option>
+                {/* You can add more options if needed */}
+              </select>
+            </div>
 
-                {/* Skin Tone Select */}
-                <div className='mb-4'>
-                  <label className='form-label'>Skin Tone</label>
-                  <select
-                    className='form-select'
-                    name='skin_tone'
-                    value={profileData.skin_tone}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    <option value='LT'>Light</option>
-                    <option value='MD'>Medium</option>
-                    <option value='DK'>Dark</option>
-                  </select>
-                </div>
+            {/* Skin Tone Select */}
+            <div className='mb-4'>
+              <label className='form-label'>Skin Tone</label>
+              <select
+                className='form-select'
+                name='skin_tone'
+                value={profileData.skin_tone}
+                onChange={handleInputChange}
+                required
+              >
+                <option value='ES'>Extremely Fair Skin</option>
+                <option value='OS'>Olive Skin</option>
+                <option value='MS'>Medium Skin Undertone</option>
+                <option value='NS'>Neutral Skin Undertone</option>
+                <option value='BS'>Brown Skin</option>
+                <option value='DS'>Dark Skin</option>
 
-                {/* Image Upload */}
-                <div className='mb-4'>
-                  <label className='form-label'>Upload Image</label>
-                  <input
-                    type='file'
-                    className='form-control'
-                    name='captured_image'
-                    onChange={handleFileChange}
-                    accept='image/*'
-                  />
-                </div>
+              </select>
+            </div>
 
-                {/* Submit Button */}
-                <MDBBtn className='w-100 mb-4' size='md' type='submit'>
-                  Create Profile
-                </MDBBtn>
-              </form>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+            {/* Image Upload */}
+            <div className='mb-4'>
+              <label className='form-label'>Upload Image</label>
+              <input
+                type='file'
+                className='form-control'
+                name='captured_image'
+                onChange={handleFileChange}
+                accept='image/*'
+              />
+            </div>
+
+            {/* Submit Button */}
+            <MDBBtn className='w-100 mb-4' size='md' type='submit'>
+              Create Profile
+            </MDBBtn>
+          </form>
+        </MDBCardBody>
+      </MDBCard>
+    </MDBCol>
+  </MDBRow>
+</MDBContainer>
+
   );
 };
 

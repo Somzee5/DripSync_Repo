@@ -93,9 +93,12 @@ class Profile(models.Model):
     ]
     
     SKIN_TONE_CHOICES = [
-        ('LT', 'Light'),
-        ('MD', 'Medium'),
-        ('DK', 'Dark'),
+        ('EF', 'Extremely Fair Skin'),
+        ('OS', 'Olive Skin'),
+        ('MS', 'Medium Skin Undertone'),
+        ('NS', 'Neutral Skin Undertone'),
+        ('BS', 'Brown Skin'),
+        ('DK', 'Dark Skin'),
     ]
     
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -104,7 +107,7 @@ class Profile(models.Model):
     age = models.IntegerField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True)
     waist = models.FloatField(null=True)
-    skin_tone = models.CharField(max_length=2, choices=SKIN_TONE_CHOICES, default='LT')
+    skin_tone = models.CharField(max_length=2, choices=SKIN_TONE_CHOICES, default='EF')  # Adjust default as needed
     captured_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 
     def __str__(self):

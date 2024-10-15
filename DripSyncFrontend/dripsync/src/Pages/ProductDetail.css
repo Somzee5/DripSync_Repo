@@ -1,41 +1,218 @@
-/* ProductDetail.css */
+/* General Styling */
+.product-detail-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #ececec 0%, #f8f8f8 100%);
+  min-height: 100vh;
+}
 
+/* Product Detail Container */
 .product-detail-container {
   display: flex;
-  flex-direction: column; /* Stack the main product on top and related products below */
-  justify-content: flex-start; /* Align items to the top */
-  align-items: center; /* Center align items horizontally */
-  min-height: 100vh;
-  background-color: #f4f4f4;
+  max-width: 1200px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  margin-top: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.product-detail-card {
-  background: #fff;
-  padding: 30px; /* Increased padding to make it stand out more */
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for emphasis */
-  max-width: 700px; /* Increased max width to make the main product larger */
-  margin: 30px 0; /* Space above and below the main product */
-  text-align: center;
+.product-detail-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-.product-image {
-  width: 90%; /* Slightly reduced to give more margin */
+/* Product Image Section */
+.product-image img {
+  width: 400px;
   height: auto;
+  object-fit: cover;
+  border-radius: 12px 0 0 12px;
+  transition: transform 0.4s ease;
+}
+
+.product-image img:hover {
+  transform: scale(1.05);
+}
+
+/* Product Info Section */
+.product-info {
+  flex: 1;
+  padding: 30px;
+}
+
+.product-name {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.product-description {
+  font-size: 18px;
+  margin-bottom: 15px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.product-category,
+.product-color,
+.product-wear-type {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.product-category strong,
+.product-color strong,
+.product-wear-type strong {
+  font-weight: bold;
+  color: #000;
+}
+
+/* Price Section */
+.price-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.discounted-price {
+  font-size: 26px;
+  color: #e60000;
+  font-weight: bold;
+}
+
+.original-price {
+  font-size: 18px;
+  color: gray;
+  text-decoration: line-through;
+}
+
+/* Button Styles */
+.button-container {
+  display: flex;
+  gap: 15px;
+}
+
+.buy-now-button,
+.add-to-wardrobe-button,
+.try-on-button {
+  padding: 12px 25px;
+  border: none;
   border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.product-link {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 12px 24px; /* Increased padding for a more prominent button */
+/* Buy Now Button */
+.buy-now-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.buy-now-button:hover {
+  background-color: #218838;
+  transform: translateY(-3px);
+}
+
+/* Add to Wardrobe Button */
+.add-to-wardrobe-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.add-to-wardrobe-button:hover {
+  background-color: #e68900;
+  transform: translateY(-3px);
+}
+
+/* Try On Button */
+.try-on-button {
   background-color: #007bff;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-  font-size: 1.1em; /* Slightly larger font for emphasis */
+  color: white;
 }
 
-.product-link:hover {
+.try-on-button:hover {
   background-color: #0056b3;
+  transform: translateY(-3px);
+}
+
+/* Recommendations Section */
+.recommendations {
+  margin-top: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Updated .recommendation-cards for grid layout with 3 items per row */
+.recommendation-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+  gap: 20px; /* Space between items */
+  padding: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.recommendation-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 15px;
+  width: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recommendation-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.recommendation-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.recommendation-card img:hover {
+  transform: scale(1.1);
+}
+
+.view-details-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.view-details-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .recommendation-cards {
+    grid-template-columns: repeat(2, 1fr); /* 2 items per row */
+  }
+}
+
+@media (max-width: 600px) {
+  .recommendation-cards {
+    grid-template-columns: 1fr; /* 1 item per row */
+  }
 }

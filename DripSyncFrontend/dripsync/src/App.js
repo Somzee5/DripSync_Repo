@@ -21,6 +21,7 @@ function App() {
         <ProtectedRoute path="/me/" component={ProtectedRoute} />
         <ProtectedRoute exact path="/home" component={Home} />
         <ProtectedRoute exact path="/home/:gender/:taskId" component={ProductCard} />
+        <ProtectedRoute exact path="/home/recommended" component={ProductCard} />
         <ProtectedRoute exact path="/home/:gender/:subcategory/:productId" component={ProductDetail} />
         <ProtectedRoute path="/myprofile/:user_id" component={PersonalProfile} />
       </Switch>

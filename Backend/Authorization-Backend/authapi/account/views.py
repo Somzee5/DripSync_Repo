@@ -293,8 +293,17 @@ class ProvideUserIDView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        # Get the user ID
         user_id = request.user.id
-        return Response({'user_id': user_id})
+
+        try:
+            # Access the user's profile to get the gender
+            gender = request.user.profile.get_gender_display()  # This will give the full display value (e.g., 'Male' or 'Female')
+        except Profile.DoesNotExist:
+            return Response({'error': 'Profile not found'}, status=404)
+
+        # Return both user_id and gender in the response
+        return Response({'user_id': user_id, 'gender': gender})
     
 
 

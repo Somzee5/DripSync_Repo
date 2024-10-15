@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   MDBContainer,
   MDBNavbar,
-  MDBNavbarBrand, 
+  MDBNavbarBrand,
   MDBNavbarToggler,
   MDBIcon,
   MDBNavbarNav,
@@ -17,15 +17,43 @@ import {
 } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import './HeroSection.css';
+import { useHistory } from 'react-router-dom';
 
-const HeroSection = ({ handleSearch, user_id, suggestions }) => {
+const HeroSection = ({ user_id, gender }) => {
+  const history = useHistory();
   const [openBasic, setOpenBasic] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+
+  const fetchSuggestions = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/get-suggestions?search_term=${searchQuery}&gender=${gender}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setSuggestions(data);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+      setSuggestions([]); // Clear suggestions on error
+    }
+  };
+
+  const handleSearchBar = () => {
+    history.push(`/home/${gender}/${searchQuery}`);
+  };
 
   const renderSuggestions = () => {
+    // Ensure that suggestions is an array
+    if (!Array.isArray(suggestions) || suggestions.length === 0) {
+      return <div>No suggestions available.</div>; // Fallback UI
+    }
+
     return suggestions.map((suggestion, index) => (
-      <div key={index} className="suggestion-item">
-        {suggestion}
+      <div key={index}>
+        <Link to={`/home/${gender}/${suggestion}`} className="suggestion-item">
+          {suggestion}
+        </Link>
       </div>
     ));
   };
@@ -38,21 +66,19 @@ const HeroSection = ({ handleSearch, user_id, suggestions }) => {
     'Three-Fourths', 'V-Neck T-shirt'
   ];
 
-  const womenCategories = 
-    ['Kurtas', 'Kurta Suit Sets', 'Leggings', 'Flared',
-      'Salwars & Churidars', 'Printed', 'Jeans & Jeggings',
-      'Track Pants', 'Tops', 'T-Shirts', 'Trousers & Pants',
-      'Dress Material', 'Camisole', 'Joggers', 'Treggings', 'Shirts',
-      'Palazzos & Culottes', 'Capri', 'Skirts & Shorts',
-      'Sweatshirts & Hoodies', 'Hoodie', 'Kurti', 'Pullover', 'Sarees',
-      'Palazzo', 'Trackpants', 'Jumpsuits & Playsuits',
-      'Jackets & Coats', 'Tights', 'Kurtis & Tunics', 'Gown', 'Dupatta',
-      'Blouses', 'Shrugs & Boleros', 'Shawls & Wraps',
-      'Sweaters & Cardigans', 'Dungarees', 'Skirts',
-      'Hipsters', 'Swimsuit', 'Nightgown', 'Briefs'
+  const womenCategories = [
+    'Kurtas', 'Kurta Suit Sets', 'Leggings', 'Flared',
+    'Salwars & Churidars', 'Printed', 'Jeans & Jeggings',
+    'Track Pants', 'Tops', 'T-Shirts', 'Trousers & Pants',
+    'Dress Material', 'Camisole', 'Joggers', 'Treggings', 'Shirts',
+    'Palazzos & Culottes', 'Capri', 'Skirts & Shorts',
+    'Sweatshirts & Hoodies', 'Hoodie', 'Kurti', 'Pullover', 'Sarees',
+    'Palazzo', 'Trackpants', 'Jumpsuits & Playsuits',
+    'Jackets & Coats', 'Tights', 'Kurtis & Tunics', 'Gown', 'Dupatta',
+    'Blouses', 'Shrugs & Boleros', 'Shawls & Wraps',
+    'Sweaters & Cardigans', 'Dungarees', 'Skirts',
+    'Hipsters', 'Swimsuit', 'Nightgown', 'Briefs'
   ];
-
-
 
   return (
     <MDBNavbar expand='lg' light bgColor='light' className="hero-section">
@@ -108,9 +134,27 @@ const HeroSection = ({ handleSearch, user_id, suggestions }) => {
               </MDBDropdown>
             </MDBNavbarItem>
 
+            {/* Personalized Recommendation categories */}
+            <MDBNavbarItem>
+              <MDBDropdown>
+                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
+                  Personalizations
+                </MDBDropdownToggle>
+                <MDBDropdownMenu className="category-dropdown">
+                  <div className="dropdown-columns">
+                    {womenCategories.map((category, index) => (
+                      <MDBDropdownItem key={index} link>
+                        <Link to={`/home/recommended/${category}`}>{category}</Link>
+                      </MDBDropdownItem>
+                    ))}
+                  </div>
+                </MDBDropdownMenu>
+              </MDBDropdown>
+            </MDBNavbarItem>
+
             {/* Search Bar */}
             <MDBNavbarItem className="search-container ms-3">
-              <form className='d-flex input-group w-auto position-relative'>
+              <form className='d-flex input-group w-auto position-relative' onSubmit={(e) => { e.preventDefault(); fetchSuggestions(); }}>
                 <MDBInput
                   label='Search for products...'
                   id='search'
@@ -118,11 +162,11 @@ const HeroSection = ({ handleSearch, user_id, suggestions }) => {
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
-                    handleSearch(e.target.value);
                   }}
                   className="search-input"
+                  onKeyUp={fetchSuggestions} // Fetch suggestions on keyup
                 />
-                <MDBBtn color='primary' className="ms-2">Search</MDBBtn>
+                <MDBBtn color='primary' type='submit' className="ms-2">Search</MDBBtn>
                 {searchQuery && (
                   <div className="search-suggestions position-absolute bg-white border rounded mt-2 p-2" style={{ zIndex: 1000, width: '100%' }}>
                     {renderSuggestions()}
