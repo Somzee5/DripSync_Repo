@@ -65,6 +65,8 @@ const Signup = () => {
 
       const { access, user_id } = response.data;
       sessionStorage.setItem('access_token', access);
+      sessionStorage.setItem('user_id', user_id); // Store user_id in sessionStorage
+      
       history.push(`/profile/${user_id}`);
     } catch (err) {
       console.error(err);

@@ -3,6 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import './ProductDetail.css';
 import './RelatedProduct.css';
 import HeroSection from '../Components/HeroSection'; // Importing HeroSection
+import api from '../utils/api'; // Make sure to import your api utility for requests
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -55,6 +56,40 @@ const ProductDetail = () => {
     history.push(`/home/${gender}/${relatedProductCategory}/${relatedProductId}`);
   };
 
+  // Method to add the product into the wardrobe
+  const addToWardrobe = async () => {
+    const userId = sessionStorage.getItem('user_id'); // Get user_id from sessionStorage
+
+    const data = {
+        user: userId,
+        Id_Product: product.Id_Product,
+        Product_URL: product.Product_URL,
+        URL_image: product.URL_image,
+        Description: product.Description,
+        Price: product['Original Price (in Rs.)'],
+        added_date: new Date().toISOString(),
+        // No need to include the user_id here; it's handled in the backend
+    };
+
+    try {
+        // Ensure to use the correct endpoint, make sure it matches your backend
+        const response = await api.post('/wardrobe/', data, {
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+                Authorization: `Bearer ${sessionStorage.getItem('access_token')}`, // Ensure correct token key
+            },
+        });
+        alert('Product added to wardrobe successfully!');
+    } catch (error) {
+        console.error('Error adding to wardrobe:', error);
+        alert('Failed to add to wardrobe. Please try again.');
+        if (error.response) {
+            console.error('Response error data:', error.response.data); // Log detailed error response
+        }
+    }
+};
+
+
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -72,6 +107,7 @@ const ProductDetail = () => {
         <p><strong>Color:</strong> {product.Color}</p>
         <p><strong>Wear Type:</strong> {product.Wear_Type}</p>
         <a href={product.Product_URL} target="_blank" rel="noopener noreferrer" className="product-link">Buy Now</a>
+        <button onClick={addToWardrobe} className="add-to-wardrobe-button">Add to Wardrobe</button> {/* Add to wardrobe button */}
       </div>
 
       <div className="related-products-container">

@@ -1,10 +1,10 @@
-/* components/productCard.css */
 .card-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     max-width: 100%; /* Full width of the screen */
-    margin: 0 auto;
+    margin: 20px auto; /* Add some margin above and below */
+    padding-top: 20px; /* Add padding at the top */
 }
 
 .card-row {
@@ -37,7 +37,7 @@
     margin-bottom: 10px;
 }
 
-.card h3 {
+.card h2 {
     font-size: 1.2rem; /* Larger font for brand/title */
     font-weight: bold;
 }

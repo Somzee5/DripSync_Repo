@@ -1,5 +1,5 @@
 from django.urls import path
-from account.views import UserRegistrationView, UserLoginView,  UserChangePasswordView, CompleteProfileView, ForgotPasswordView, VerifyOTPView, MyProfileView, ProvideUserIDView
+from account.views import UserRegistrationView, UserLoginView,  UserChangePasswordView, CompleteProfileView, ForgotPasswordView, VerifyOTPView, MyProfileView, ProvideUserIDView, AddToWardrobeView
 from .views import get_current_user
 from django.conf import settings
 from django.conf.urls.static import static
@@ -16,6 +16,7 @@ urlpatterns = [
     path('myprofile/<int:user_id>/', MyProfileView.as_view(), name='myprofile'),
     path('home/', ProvideUserIDView.as_view(), name='provide-user_id'),
 
+    path('wardrobe/', AddToWardrobeView.as_view(), name='add-to-wardrobe'),
 ]
 
 if settings.DEBUG:

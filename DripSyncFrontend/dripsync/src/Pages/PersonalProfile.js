@@ -20,7 +20,7 @@ export default function PersonalProfile() {
         setLoading(false);
       } catch (error) {
         console.error('Error fetching user profile:', error);
-      }
+      } 
     };
     fetchUserProfile();
   }, [user_id]);
@@ -63,7 +63,7 @@ export default function PersonalProfile() {
                         <MDBTypography tag="h6">Skintone</MDBTypography>
                         <MDBCardText className="text-muted">{profile.skin_tone}</MDBCardText>
                       </MDBCol>
-                    </MDBRow>
+                    </MDBRow> 
 
                     <MDBRow className="pt-1">
                       <MDBCol size="6" className="mb-3">
@@ -85,6 +85,10 @@ export default function PersonalProfile() {
                         <MDBTypography tag="h6">Gender</MDBTypography>
                         <MDBCardText className="text-muted">{profile.gender}</MDBCardText>
                       </MDBCol>
+                      <MDBCol size="6" className="mb-3">
+                        <MDBTypography tag="h6">Waist</MDBTypography>
+                        <MDBCardText className="text-muted">{profile.waist}</MDBCardText>
+                      </MDBCol>
                     </MDBRow>
                   </MDBCardBody>
                 </MDBCol>
@@ -94,34 +98,41 @@ export default function PersonalProfile() {
 
           {/* Right: My Wardrobe Section */}
           <MDBCol lg="7"> {/* Changed lg from 8 to 7 */}
-            <MDBTypography tag="h5" className="mb-3">My Wardrobe (Wishlist)</MDBTypography>
-            {wardrobe.length > 0 ? (
-              wardrobe.map((item) => (
-                <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }} key={item.Id_Product}> {/* Added width: 100% */}
-                  <MDBRow className="g-0 align-items-center">
+    <MDBTypography tag="h5" className="mb-3">My Wardrobe (Wishlist)</MDBTypography>
+    {wardrobe.length > 0 ? (
+        wardrobe.map((item) => (
+            <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }} key={item.Id_Product}> {/* Added width: 100% */}
+                <MDBRow className="g-0 align-items-center">
                     <MDBCol md="4">
-                      <MDBCardImage 
-                        src={item.URL_image || "https://via.placeholder.com/150"}
-                        alt="Wardrobe Item" 
-                        className="img-fluid" 
-                        style={{ borderRadius: '.5rem', height: '100%' }} 
-                      />
+                        <MDBCardImage 
+                            src={item.URL_image || "https://via.placeholder.com/150"}
+                            alt="Wardrobe Item" 
+                            className="img-fluid" 
+                            style={{ borderRadius: '.5rem', height: '100%' }} 
+                        />
                     </MDBCol>
                     <MDBCol md="8">
-                      <MDBCardBody>
-                        <MDBTypography tag="h5">{item.Description}</MDBTypography>
-                        <MDBTypography tag="h6" className="text-muted">Price: ${item.Price}</MDBTypography>
-                        <MDBCardText><small className="text-muted">Added on: {new Date(item.added_date).toLocaleDateString()}</small></MDBCardText>
-                        <MDBCardText><small className="text-muted">Product URL: <a href={item.Product_URL} target="_blank" rel="noreferrer">{item.Product_URL}</a></small></MDBCardText>
-                      </MDBCardBody>
+                        <MDBCardBody>
+                            <MDBTypography tag="h5">{item.Description}</MDBTypography>
+                            <MDBTypography tag="h6" className="text-muted">Price: ${item.Price}</MDBTypography>
+                            <MDBCardText><small className="text-muted">Added on: {new Date(item.added_date).toLocaleDateString()}</small></MDBCardText>
+                            
+                            {/* Replace product URL with a Buy Now button */}
+                            <MDBCardText>
+                                <a href={item.Product_URL} target="_blank" rel="noreferrer">
+                                    <button className="btn btn-primary">Buy Now</button>
+                                </a>
+                            </MDBCardText>
+                        </MDBCardBody>
                     </MDBCol>
-                  </MDBRow>
-                </MDBCard>
-              ))
-            ) : (
-              <MDBTypography tag="h6" className="text-muted">No items in wardrobe</MDBTypography>
-            )}
+                </MDBRow>
+            </MDBCard>
+                  ))
+              ) : (
+                  <MDBTypography tag="h6" className="text-muted">No items in wardrobe</MDBTypography>
+              )}
           </MDBCol>
+
         </MDBRow>
       </MDBContainer>
     </section>

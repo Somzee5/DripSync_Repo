@@ -287,6 +287,7 @@ class MyProfileView(APIView):
         except Profile.DoesNotExist:
             return Response({'error': 'Profile not found.'}, status=status.HTTP_404_NOT_FOUND)        
 
+
 # view to provide user_id 
 class ProvideUserIDView(APIView):
     permission_classes = [IsAuthenticated]
@@ -295,3 +296,29 @@ class ProvideUserIDView(APIView):
         user_id = request.user.id
         return Response({'user_id': user_id})
     
+
+
+# View to add the product into wardrobe
+class AddToWardrobeView(APIView):
+    permission_classes = [IsAuthenticated]
+ 
+    def post(self, request):
+        print("Received data:", request.data)
+        # Ensure the request data contains the required fields for the wardrobe
+        data = {
+            'Id_Product': request.data.get('Id_Product'),
+            'Product_URL': request.data.get('Product_URL'),
+            'URL_image': request.data.get('URL_image'),
+            'Description': request.data.get('Description'),
+            'Price': request.data.get('Price'),
+            'added_date': request.data.get('added_date'),  # This can also be set to the current date
+            # You don't need to include the 'user' field here
+        }
+
+        serializer = WardrobeSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save(user=request.user)  # Associate with the logged-in user
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

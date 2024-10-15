@@ -58,7 +58,7 @@ const HeroSection = ({ handleSearch, user_id, suggestions }) => {
     <MDBNavbar expand='lg' light bgColor='light' className="hero-section">
       <MDBContainer fluid>
         {/* Logo on the Left */}
-        <MDBNavbarBrand href='#'>
+        <MDBNavbarBrand href='/home'>
           <img src={require('./logo.png')} alt='DripSync Logo' className='logo' />
         </MDBNavbarBrand>
 

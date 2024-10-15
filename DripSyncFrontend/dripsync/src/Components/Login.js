@@ -25,8 +25,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post('/login/', { email, password });
-      const { access } = response.data;
+      const { access, user_id } = response.data;
       sessionStorage.setItem('access_token', access);
+      sessionStorage.setItem('user_id', user_id);
+
       history.push('/home');
     } 
     catch (error) 
