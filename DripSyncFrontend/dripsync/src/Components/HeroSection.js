@@ -104,7 +104,7 @@ const HeroSection = ({ user_id, gender, height, weight, waist, skintone }) => {
         <Link to={`/recommended/${skintone}/${gender}/${category}`} className="category-item">
           {category}
         </Link>
-      </div>
+      </div> 
     ));
   };
 

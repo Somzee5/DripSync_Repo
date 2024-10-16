@@ -210,27 +210,41 @@ def calculate_body_type(height, weight, waist):
 def display_recommended_categories():
     skin_tone = request.args.get('skintone', '')
     gender = request.args.get('gender', '')
-    search_term = request.args.get('taskId', '')  # Assuming taskId is the search term here
+    search_term = request.args.get('search_term', '')  # Assuming taskId is the search term here
 
     # Load the appropriate dataset based on gender
     if gender == 'men':
         df = pd.read_csv("Ajio_Men_Clothing_Updated.csv")
+        gender_label='male'
+        
     elif gender == 'women':
         df = pd.read_csv("Ajio_Women_Clothing_Updated.csv")
+        gender_label='female'
+
+    print(search_term)
+    print(gender_label)
+
+    filtered_df=main_recommended_categories(df,gender_label,search_term,skin_tone,skin_tone_df)
     
-    # Select relevant columns for color matching from the skin_tone_df
+  
+    filtered_data = filtered_df[['URL_image', 'Brand', 'Description', 'Id_Product']].to_dict(orient='records')
+
+    # # Return the data as a JSON response
+    return jsonify(filtered_data)
+
+
+
+
+
+def main_recommended_categories(df, gender, search_term, skin_tone, skin_tone_df):
+    # Step 1: Select relevant columns for color matching from the skin_tone_df
     color_columns = ['OUTFITS_processed', 'SUMMER OUTFIT_processed', 
                      'WINTER OUTFIT_processed', 'SPRING OUTFIT_processed']
     
-    if gender == 'men':
-        gender = 'male'
-    elif gender == 'women':
-        gender = 'female'
-
-    # Filter skin_tone_df for the specified skin tone
+    # Step 2: Filter skin_tone_df for the specified skin tone
     filtered_skin_tone_df = skin_tone_df[(skin_tone_df['SKIN TONE'] == skin_tone) & (skin_tone_df['GENDER'] == gender)]
 
-    # Create a set of colors associated with the given skin tone
+    
     relevant_colors = set()
     for column in color_columns:
         # Extract colors that are not null and convert them to lists
@@ -241,31 +255,33 @@ def display_recommended_categories():
             # Convert string representation of list to actual list
             if isinstance(color_list, str):
                 color_list = eval(color_list)  # Be cautious with eval; ensure input is controlled
-            relevant_colors.update(color_list)
+                relevant_colors.update(color_list)
 
     # Convert relevant_colors set to a list
     relevant_colors_list = list(relevant_colors)
 
-    # Filter the DataFrame based on the search term
+    # Debugging: Print relevant colors
+    #print("Relevant colors:", relevant_colors_list)
+
+    # Step 4: Filter the DataFrame based on the search term
     filtered_df = df[df['Description'].str.contains(search_term, case=False, na=False)]
     
+    # Debugging: Print unique colors in filtered DataFrame
+    #print("Unique colors in filtered DataFrame:", filtered_df['Color'].unique())
+
     # Trim whitespace from Color column in filtered_df
     filtered_df['Color'] = filtered_df['Color'].str.strip()
 
-    # Filter the DataFrame using the list of relevant colors
+    # Debugging: Print trimmed colors
+    #print("Trimmed colors in filtered DataFrame:", filtered_df['Color'].unique())
+
+    # Step 5: Filter the DataFrame using the list of relevant colors
     filtered_df = filtered_df[filtered_df['Color'].isin(relevant_colors_list)]
     
-    # Convert the final filtered DataFrame to a dictionary
-    filtered_data = filtered_df[['URL_image', 'Brand', 'Description', 'Id_Product']].to_dict(orient='records')
+    # Debugging: Print the final filtered DataFrame
+    print("Filtered DataFrame based on relevant colors:\n", filtered_df)
 
-    # Return the data as a JSON response
-    return jsonify(filtered_data)
-
-
-
-
-
-
+    return filtered_df
 
 
 
