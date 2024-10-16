@@ -303,7 +303,7 @@ class ProvideUserIDView(APIView):
             height = profile.height  # Assuming height is a field in the Profile model
             weight = profile.weight  # Assuming weight is a field in the Profile model
             waist = profile.waist  # Assuming waist is a field in the Profile model
-            skintone = profile.skin_tone
+            skintone = profile.get_skin_tone_display()
         except Profile.DoesNotExist:
             return Response({'error': 'Profile not found'}, status=404)
 
@@ -344,3 +344,11 @@ class AddToWardrobeView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, Id_Product):
+        try:
+            wardrobe_item = Wardrobe.objects.get(user=request.user, Id_Product=Id_Product)
+            wardrobe_item.delete()
+            return Response({"message": "Item removed from wardrobe successfully."}, status=status.HTTP_204_NO_CONTENT)
+        except Wardrobe.DoesNotExist:
+            return Response({"error": "Item not found in wardrobe."}, status=status.HTTP_404_NOT_FOUND)

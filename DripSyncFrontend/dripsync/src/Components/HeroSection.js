@@ -101,7 +101,7 @@ const HeroSection = ({ user_id, gender, height, weight, waist, skintone }) => {
 
     return personalizedCategories.map((category, index) => (
       <div key={index}>
-        <Link to={`/home/recommended/${category}`} className="category-item">
+        <Link to={`/recommended/${skintone}/${gender}/${category}`} className="category-item">
           {category}
         </Link>
       </div>

@@ -16,7 +16,9 @@ urlpatterns = [
     path('myprofile/<int:user_id>/', MyProfileView.as_view(), name='myprofile'),
     path('home/', ProvideUserIDView.as_view(), name='provide-user_id'),
 
+
     path('wardrobe/', AddToWardrobeView.as_view(), name='add-to-wardrobe'),
+    path('wardrobe/<int:Id_Product>/', AddToWardrobeView.as_view(), name='add-to-wardrobe'),
 ]
 
 if settings.DEBUG:

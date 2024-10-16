@@ -8,7 +8,9 @@ import ProtectedRoute from './Components/ProtectedRoute';
 import Home from './Pages/Home';
 import PersonalProfile from './Pages/PersonalProfile';
 import ProductCard from './Components/ProductCard';
+import RecommendedCard from './Components/RecommendedCard';
 import ProductDetail from './Pages/ProductDetail';
+import RecommendedProductDetail from './Pages/RecommendedProductDetail';
 
 function App() {
   return (
@@ -21,9 +23,16 @@ function App() {
         <ProtectedRoute path="/me/" component={ProtectedRoute} />
         <ProtectedRoute exact path="/home" component={Home} />
         <ProtectedRoute exact path="/home/:gender/:taskId" component={ProductCard} />
+        <ProtectedRoute exact path="/recommended/:skintone/:gender/:taskId" component={RecommendedCard} />
+        <ProtectedRoute exact path="/recommended/:skintone/:gender/:taskId/:productId" component={RecommendedProductDetail} />
+
+
         <ProtectedRoute exact path="/home/recommended" component={ProductCard} />
         <ProtectedRoute exact path="/home/:gender/:subcategory/:productId" component={ProductDetail} />
         <ProtectedRoute path="/myprofile/:user_id" component={PersonalProfile} />
+
+
+
       </Switch>
     </Router>
   );

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
 import api from '../utils/api'; 
 
-
 export default function PersonalProfile() {
   const { user_id } = useParams(); // Extract user ID from route
   const [profile, setProfile] = useState({});
@@ -24,6 +23,17 @@ export default function PersonalProfile() {
     };
     fetchUserProfile();
   }, [user_id]);
+
+  // Function to handle removal of an item from wardrobe
+  const handleRemoveFromWardrobe = async (Id_Product) => {
+    try {
+      await api.delete(`/wardrobe/${Id_Product}`); // Call delete API
+      // Filter out the removed item from wardrobe state
+      setWardrobe(wardrobe.filter((item) => item.Id_Product !== Id_Product));
+    } catch (error) {
+      console.error('Error removing item from wardrobe:', error);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -98,39 +108,46 @@ export default function PersonalProfile() {
 
           {/* Right: My Wardrobe Section */}
           <MDBCol lg="7"> {/* Changed lg from 8 to 7 */}
-    <MDBTypography tag="h5" className="mb-3">My Wardrobe (Wishlist)</MDBTypography>
-    {wardrobe.length > 0 ? (
-        wardrobe.map((item) => (
-            <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }} key={item.Id_Product}> {/* Added width: 100% */}
-                <MDBRow className="g-0 align-items-center">
+            <MDBTypography tag="h5" className="mb-3">My Wardrobe (Wishlist)</MDBTypography>
+            {wardrobe.length > 0 ? (
+              wardrobe.map((item) => (
+                <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }} key={item.Id_Product}> {/* Added width: 100% */}
+                  <MDBRow className="g-0 align-items-center">
                     <MDBCol md="4">
-                        <MDBCardImage 
-                            src={item.URL_image || "https://via.placeholder.com/150"}
-                            alt="Wardrobe Item" 
-                            className="img-fluid" 
-                            style={{ borderRadius: '.5rem', height: '100%' }} 
-                        />
+                      <MDBCardImage 
+                        src={item.URL_image || "https://via.placeholder.com/150"}
+                        alt="Wardrobe Item" 
+                        className="img-fluid" 
+                        style={{ borderRadius: '.5rem', height: '100%' }} 
+                      />
                     </MDBCol>
                     <MDBCol md="8">
-                        <MDBCardBody>
-                            <MDBTypography tag="h5">{item.Description}</MDBTypography>
-                            <MDBTypography tag="h6" className="text-muted">Price: ${item.Price}</MDBTypography>
-                            <MDBCardText><small className="text-muted">Added on: {new Date(item.added_date).toLocaleDateString()}</small></MDBCardText>
-                            
-                            {/* Replace product URL with a Buy Now button */}
-                            <MDBCardText>
-                                <a href={item.Product_URL} target="_blank" rel="noreferrer">
-                                    <button className="btn btn-primary">Buy Now</button>
-                                </a>
-                            </MDBCardText>
-                        </MDBCardBody>
+                      <MDBCardBody>
+                        <MDBTypography tag="h5">{item.Description}</MDBTypography>
+                        <MDBTypography tag="h6" className="text-muted">Price: ${item.Price}</MDBTypography>
+                        <MDBCardText><small className="text-muted">Added on: {new Date(item.added_date).toLocaleDateString()}</small></MDBCardText>
+                        
+                        {/* Replace product URL with a Buy Now button */}
+                        <MDBCardText>
+                          <a href={item.Product_URL} target="_blank" rel="noreferrer">
+                            <button className="btn btn-primary">Buy Now</button>
+                          </a>
+                        </MDBCardText>
+
+                        {/* Remove item from wardrobe */}
+                        <MDBCardText>
+                          <button className="btn btn-danger" onClick={() => handleRemoveFromWardrobe(item.Id_Product)}>
+                            Remove
+                          </button>
+                        </MDBCardText>
+                      </MDBCardBody>
                     </MDBCol>
-                </MDBRow>
-            </MDBCard>
-                  ))
-              ) : (
-                  <MDBTypography tag="h6" className="text-muted">No items in wardrobe</MDBTypography>
-              )}
+                  </MDBRow>
+                </MDBCard>
+              ))
+            ) : (
+              <MDBTypography tag="h6" className="text-muted">No items in wardrobe</MDBTypography>
+            )}
           </MDBCol>
 
         </MDBRow>
