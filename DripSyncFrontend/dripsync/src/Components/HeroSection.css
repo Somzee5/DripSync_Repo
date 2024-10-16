@@ -122,3 +122,34 @@
 .nav-link:hover {
     color: #0d6efd;
 }
+
+/* Faint Color for Recommendations Button with Glowing Border */
+.recommendations-dropdown {
+    color: #ffffff; /* White text color */
+    background-color: rgba(116, 214, 247, 0.3); /* Light transparent blue background */
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 3, 4, 0.5); /* Light border */
+    font-size: 16px;
+    font-weight: bold; /* Bold text */
+    box-shadow: 0 0 10px rgba(173, 216, 230, 0.8), 
+                0 0 20px rgba(173, 216, 230, 0.6), 
+                0 0 30px rgba(173, 216, 230, 0.5); /* Glowing border */
+    animation: border-glow 1.5s infinite alternate; /* Infinite glow animation */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Glowing border animation keyframes */
+  @keyframes border-glow {
+    from {
+      box-shadow: 0 0 10px rgba(173, 216, 230, 0.5), 
+                  0 0 20px rgba(173, 216, 230, 0.4),
+                  0 0 30px rgba(173, 216, 230, 0.3);
+    }
+    to {
+      box-shadow: 0 0 20px rgba(173, 216, 230, 0.8), 
+                  0 0 30px rgba(173, 216, 230, 0.7),
+                  0 0 40px rgba(173, 216, 230, 0.6);
+    }
+  }
+  

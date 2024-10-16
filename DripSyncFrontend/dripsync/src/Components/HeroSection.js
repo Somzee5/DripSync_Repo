@@ -182,17 +182,18 @@ const HeroSection = ({ user_id, gender, height, weight, waist, skintone }) => {
 
             {/* Personalized Recommendation categories */}
             <MDBNavbarItem>
-              <MDBDropdown>
-                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
-                  Personalizations
-                </MDBDropdownToggle>
-                <MDBDropdownMenu className="category-dropdown">
-                  <div className="dropdown-columns">
-                    {renderPersonalizedCategories()}
-                  </div>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-            </MDBNavbarItem>
+  <MDBDropdown>
+    <MDBDropdownToggle tag='a' className='nav-link recommendations-dropdown' role='button'>
+      Recommendations!
+    </MDBDropdownToggle>
+    <MDBDropdownMenu className="category-dropdown">
+      <div className="dropdown-columns">
+        {renderPersonalizedCategories()}
+      </div>
+    </MDBDropdownMenu>
+  </MDBDropdown>
+</MDBNavbarItem>
+
 
             {/* Search Bar */}
             <MDBNavbarItem className="search-container ms-3">

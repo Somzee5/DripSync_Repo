@@ -37,3 +37,14 @@
     transform: translateY(-50%);
   }
   
+  .color-swatch {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  
+  

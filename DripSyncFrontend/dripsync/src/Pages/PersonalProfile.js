@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
+import { useParams, useHistory } from 'react-router-dom';
+import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
 import api from '../utils/api'; 
 
 export default function PersonalProfile() {
   const { user_id } = useParams(); // Extract user ID from route
+  const history = useHistory(); // Initialize useHistory
   const [profile, setProfile] = useState({});
   const [wardrobe, setWardrobe] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +34,13 @@ export default function PersonalProfile() {
     } catch (error) {
       console.error('Error removing item from wardrobe:', error);
     }
+  };
+
+  // Function to handle logout
+  const handleLogout = () => {
+    sessionStorage.removeItem('access_token'); // Remove access token
+    sessionStorage.removeItem('user_id'); // Remove user ID
+    history.push('/'); // Redirect to login page
   };
 
   if (loading) {
@@ -100,6 +108,8 @@ export default function PersonalProfile() {
                         <MDBCardText className="text-muted">{profile.waist}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
+                    {/* Logout Button */}
+                    <MDBBtn className="mt-4" onClick={handleLogout}>Logout</MDBBtn>
                   </MDBCardBody>
                 </MDBCol>
               </MDBRow>

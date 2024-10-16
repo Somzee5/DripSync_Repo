@@ -31,7 +31,7 @@ const Login = () => {
 
       history.push('/home');
     } 
-    catch (error) 
+    catch (error)  
     {
       setError('Invalid email or password');
     }
