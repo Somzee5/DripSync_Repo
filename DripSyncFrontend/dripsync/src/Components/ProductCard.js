@@ -6,7 +6,7 @@ import HeroSection from './HeroSection'; // Import HeroSection
 
 const ProductCard = () => {
   const path = window.location.pathname.split('/');
-  const gender = path[2];
+  const gender = path[2]; 
   const taskId = path[3];
 
   const [cards, setCards] = useState([]);

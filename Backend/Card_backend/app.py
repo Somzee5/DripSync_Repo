@@ -8,7 +8,7 @@ CORS(app)
 
 male_categories = [
     'Graphic T-Shirts', 'Henley T-Shirts', 'Polo T-Shirts', 'Casual Shirts', 
-    'Formal Shirts', 'Round Neck T-Shirts', 'V-Neck T-Shirts', 'Long Sleeve T-Shirts', 
+    'Formal Shirts', 'Round Neck T-Shirts', 'V-Neck T-Shirts', 'Pullovers', 
     'Oversized T-Shirts', 'Sweatshirts', 'Hoodies', 'Cardigans', 'Blazers', 
     'Jackets', 'Denim Jackets', 'Leather Jackets', 'Bomber Jackets', 'Biker Jackets', 
     'Puffer Jackets', 'Coats', 'Trench Coats', 'Parkas', 'Overcoats', 'Vests', 
@@ -27,9 +27,9 @@ female_categories = [
 ]
 
 unisex_categories = [
-    'Shirts', 'T-Shirts', 'Tank Tops', 'Pullover Sweaters', 'Oversized Shirts',
+    'Shirts', 'T-Shirts', 'Pullover Sweaters', 'Oversized Shirts',
     'Button-Down Shirts', 'Sweatshirts', 'Hoodies', 'Blazers', 'Denim Jackets', 
-    'Casual Jackets', 'Raincoats', 'Printed Leggings', 'Cropped Trousers', 
+    'Jackets', 'Cropped Trousers', 
     'Graphic T-Shirts', 'Wrap Tops', 'Sweaters'
 ]
 

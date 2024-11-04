@@ -52,13 +52,13 @@ const Signup = () => {
       setError('Passwords do not match.');
       return;
     }
-
+ 
     try {
       const response = await api.post('/register/', {
         firstname: formData.firstName,
         lastname: formData.lastName,
         email: formData.email,
-        password: formData.password,
+        password: formData.password, 
         password2: formData.confirmPassword,
         tc: formData.termsAccepted
       });

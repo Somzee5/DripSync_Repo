@@ -89,8 +89,8 @@ from django.conf import settings  # Import settings to use AUTH_USER_MODEL
 class Profile(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),
-        ('F', 'Female'),
-    ]
+        ('F', 'Female'), 
+    ]  
     
     SKIN_TONE_CHOICES = [
         ('EF', 'Extremely Fair Skin'),

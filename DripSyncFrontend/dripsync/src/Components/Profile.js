@@ -7,7 +7,7 @@ import {
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBInput,
+  MDBInput, 
   MDBBtn,
 } from 'mdb-react-ui-kit';
 
@@ -17,7 +17,7 @@ const Profile = () => {
 
   const [profileData, setProfileData] = useState({
     age: '',
-    height: '',
+    height: '', 
     weight: '',
     waist: '',
     gender: 'M',
@@ -49,7 +49,7 @@ const Profile = () => {
     if (profileData.captured_image) {
       formData.append('captured_image', profileData.captured_image);
     }
-
+ 
     try {
       const response = await api.post(`/profile/${user_id}/`, formData, {
         headers: {

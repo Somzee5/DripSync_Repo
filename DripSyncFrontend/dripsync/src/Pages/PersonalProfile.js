@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
 import api from '../utils/api'; 
 
@@ -9,18 +9,18 @@ export default function PersonalProfile() {
   const [profile, setProfile] = useState({});
   const [wardrobe, setWardrobe] = useState([]);
   const [loading, setLoading] = useState(true);
-
+ 
   // Fetch user profile and wardrobe data based on user_id
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await api.get(`/myprofile/${user_id}`);
+        const response = await api.get(`/myprofile/${user_id}/`);
         setProfile(response.data.profile); // Set the profile data
         setWardrobe(response.data.wardrobe); // Set the wardrobe data
         setLoading(false);
       } catch (error) {
         console.error('Error fetching user profile:', error);
-      } 
+      }  
     };
     fetchUserProfile();
   }, [user_id]);
@@ -42,6 +42,18 @@ export default function PersonalProfile() {
     sessionStorage.removeItem('user_id'); // Remove user ID
     history.push('/'); // Redirect to login page
   };
+
+  // Placeholder for handling profile updates
+  const handleUpdateProfile = async () => {
+    try {
+      const updatedProfile = { profile }; // Use the existing profile state
+      await api.put(`/profile/${user_id}/`, updatedProfile); // Send updated profile to backend via PUT request
+      alert('Profile updated successfully!');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -108,8 +120,14 @@ export default function PersonalProfile() {
                         <MDBCardText className="text-muted">{profile.waist}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
+                    {/* Update Profile Button */}
+                    <Link to={`/profile/${user_id}/`}>
+                      <MDBBtn className="mt-2 d-block">
+                        Update Profile
+                      </MDBBtn>
+                    </Link>
                     {/* Logout Button */}
-                    <MDBBtn className="mt-4" onClick={handleLogout}>Logout</MDBBtn>
+                    <MDBBtn className="mt-2 d-block btn btn-danger" onClick={handleLogout}>Logout</MDBBtn>
                   </MDBCardBody>
                 </MDBCol>
               </MDBRow>

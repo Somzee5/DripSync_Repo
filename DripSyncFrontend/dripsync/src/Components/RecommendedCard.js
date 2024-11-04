@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import './ProductCard.css';
+import HeroSection from './HeroSection'; // Import HeroSection
 
 const RecommendedCard = () => {
   const path = window.location.pathname.split('/');
@@ -23,7 +24,7 @@ const RecommendedCard = () => {
       );
       if (!response.ok) {
         throw new Error('Network response was not ok');
-      }
+      } 
       const data = await response.json();
       setCards(data);
     } catch (error) {
@@ -68,9 +69,12 @@ const RecommendedCard = () => {
   };
 
   return (
-    <div className="card-container">
-      {renderCards()}
-    </div>
+    <>
+      <HeroSection /> {/* Render the navbar on top of this page */}
+      <div className="card-container">
+        {renderCards()}
+      </div>
+    </>
   );
 };
 

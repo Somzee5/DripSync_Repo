@@ -91,9 +91,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 
-
+ 
 class CompleteProfileView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated] 
 
     def post(self, request, user_id):
         # Check if the profile already exists
@@ -101,7 +101,7 @@ class CompleteProfileView(APIView):
             return Response({"error": "Profile already exists for this user."}, status=status.HTTP_400_BAD_REQUEST)
         
         # Create new profile
-        try:
+        try:  
             user = request.user
 
             # Make sure user ID from URL matches the authenticated user
@@ -128,36 +128,32 @@ class CompleteProfileView(APIView):
 
 
     def put(self, request, user_id):
+        # Fetch the existing profile
         try:
-            user = request.user 
-            # Fetch the existing profile
-            profile = Profile.objects.get(user__id=user_id)
-            
-            # Ensure the authenticated user matches the user in the profile
-            if request.user.id != user_id:
+            user = request.user
+            if user.id != user_id:
                 return Response({"error": "User ID mismatch."}, status=status.HTTP_403_FORBIDDEN)
-
+            
+            profile = Profile.objects.get(user=user)
             profile_data = request.data
-
             captured_image = request.FILES.get('captured_image')
 
-            # Create the Profile object
-            serializer = ProfileSerializer(data=profile_data)
+            # Update the profile
+            serializer = ProfileSerializer(profile, data=profile_data, partial=True)
             if serializer.is_valid():
-                profile = serializer.save(user=user)
                 if captured_image:
                     profile.captured_image = captured_image
-                    profile.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        except Profile.DoesNotExist:
+            return Response({"error": "Profile not found."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+     
 
-            
-
-
-
+ 
 
 
 @api_view(['GET'])
@@ -171,7 +167,7 @@ def get_current_user(request):
     }
     
     return Response({'user': user_data}, status=200)
-
+ 
 
 
 
@@ -268,7 +264,7 @@ from .models import Wardrobe
 from .serializers import WardrobeSerializer
 # Profile Showing view
 class MyProfileView(APIView):
-    def get(self, request, user_id):
+    def get(self, request, user_id): 
         try:
             # Fetch the user profile by user_id
             profile = Profile.objects.get(user__id=user_id)  # Ensure correct user_id lookup

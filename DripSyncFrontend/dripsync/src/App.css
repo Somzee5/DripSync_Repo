@@ -1,23 +1,27 @@
+/* Your custom styles */
 .background-radial-gradient {
   background-color: rgba(0, 0, 0, 0.3);
   background-image: 
-    url('https://media.istockphoto.com/id/1764523348/photo/portrait-of-beautiful-indian-women-having-fun-party-group-of-young-girl-friends-in-sunglasses.jpg?s=2048x2048&w=is&k=20&c=flBT9A9uTCThjTxwhCcyBjvW6N_by7fyLV0YIWtl4kw='), /* Add your image URL here */
+    url('https://media.istockphoto.com/id/1764523348/photo/portrait-of-beautiful-indian-women-having-fun-party-group-of-young-girl-friends-in-sunglasses.jpg?s=2048x2048&w=is&k=20&c=flBT9A9uTCThjTxwhCcyBjvW6N_by7fyLV0YIWtl4kw='), 
     radial-gradient(650px circle at 0% 0%, 
-    hsl(218, 41%, 55%) 15%, /* Lighter blue */
-    hsl(218, 41%, 50%) 35%, /* Lighter blue */
-    hsl(218, 41%, 40%) 75%, /* Lighter blue */
-    hsl(218, 41%, 35%) 80%, /* Lighter blue */
+    hsl(218, 41%, 55%) 15%, 
+    hsl(218, 41%, 50%) 35%, 
+    hsl(218, 41%, 40%) 75%, 
+    hsl(218, 41%, 35%) 80%, 
     transparent 100%),
     radial-gradient(1250px circle at 100% 100%, 
-    hsl(218, 41%, 55%) 15%, /* Lighter blue */
-    hsl(218, 41%, 50%) 35%, /* Lighter blue */
-    hsl(218, 41%, 40%) 75%, /* Lighter blue */
-    hsl(218, 41%, 35%) 80%, /* Lighter blue */
+    hsl(218, 41%, 55%) 15%, 
+    hsl(218, 41%, 50%) 35%, 
+    hsl(218, 41%, 40%) 75%, 
+    hsl(218, 41%, 35%) 80%, 
       transparent 100%);
-  background-size: cover; /* Ensures the image covers the whole area */
-  background-blend-mode: overlay; /* Blends the image with the gradients */
+  background-size: cover;
+  background-blend-mode: overlay;
 }
 
+#radius-shape-1, #radius-shape-2 {
+  position: absolute;
+}
 
 #radius-shape-1 {
   height: 220px;
@@ -25,7 +29,6 @@
   top: -60px;
   left: -130px;
   background: radial-gradient(#44006b, #ad1fff);
-  overflow: hidden;
 }
 
 #radius-shape-2 {
@@ -35,7 +38,6 @@
   width: 300px;
   height: 300px;
   background: radial-gradient(#44006b, #ad1fff);
-  overflow: hidden;
 }
 
 .bg-glass {

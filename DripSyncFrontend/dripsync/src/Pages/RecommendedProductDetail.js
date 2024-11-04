@@ -77,7 +77,7 @@ const RecommendedProductDetail = () => {
       alert('Failed to add to wardrobe. Please try again.');
     }
   };
-
+ 
   if (!product) {
     return <div>Loading...</div>;
   }

@@ -11,6 +11,7 @@ import ProductCard from './Components/ProductCard';
 import RecommendedCard from './Components/RecommendedCard';
 import ProductDetail from './Pages/ProductDetail';
 import RecommendedProductDetail from './Pages/RecommendedProductDetail';
+import TryOn from './Components/TryOn';
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
         <ProtectedRoute exact path="/home/recommended" component={ProductCard} />
         <ProtectedRoute exact path="/home/:gender/:subcategory/:productId" component={ProductDetail} />
         <ProtectedRoute path="/myprofile/:user_id" component={PersonalProfile} />
+        <ProtectedRoute path="/try-on" component={TryOn} />
+
 
 
 
