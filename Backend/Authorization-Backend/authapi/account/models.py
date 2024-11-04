@@ -99,7 +99,7 @@ class Profile(models.Model):
         ('NS', 'Neutral Skin Undertone'),
         ('BS', 'Brown Skin'),
         ('DK', 'Dark Skin'),
-    ]
+    ] 
     
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     height = models.FloatField()
@@ -131,7 +131,7 @@ class Wardrobe(models.Model):
         return f'{self.user.email} - {self.Description[:30]}'
 
  
-
+ 
 
 
 

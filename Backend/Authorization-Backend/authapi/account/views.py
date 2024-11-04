@@ -90,7 +90,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-
+ 
  
 class CompleteProfileView(APIView):
     permission_classes = [IsAuthenticated] 
@@ -264,7 +264,7 @@ from .models import Wardrobe
 from .serializers import WardrobeSerializer
 # Profile Showing view
 class MyProfileView(APIView):
-    def get(self, request, user_id): 
+    def get(self, request, user_id):     
         try:
             # Fetch the user profile by user_id
             profile = Profile.objects.get(user__id=user_id)  # Ensure correct user_id lookup
@@ -283,6 +283,16 @@ class MyProfileView(APIView):
         except Profile.DoesNotExist:
             return Response({'error': 'Profile not found.'}, status=status.HTTP_404_NOT_FOUND)        
 
+    def patch(self, request, user_id):
+        profile = Profile.objects.get(user_id=user_id)
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def options(self, request, *args, **kwargs):
+        return Response({"methods": ["PATCH", "GET", "OPTIONS"]}, status=status.HTTP_200_OK)
 
 # view to provide user_id 
 class ProvideUserIDView(APIView):

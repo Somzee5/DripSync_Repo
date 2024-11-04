@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
-import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
+import { useParams, useHistory } from 'react-router-dom';
+import { 
+  MDBCol, 
+  MDBContainer, 
+  MDBRow, 
+  MDBCard, 
+  MDBCardText, 
+  MDBCardBody, 
+  MDBCardImage, 
+  MDBTypography, 
+  MDBIcon, 
+  MDBBtn 
+} from 'mdb-react-ui-kit';
 import api from '../utils/api'; 
 
 export default function PersonalProfile() {
@@ -9,19 +20,23 @@ export default function PersonalProfile() {
   const [profile, setProfile] = useState({});
   const [wardrobe, setWardrobe] = useState([]);
   const [loading, setLoading] = useState(true);
- 
-  // Fetch user profile and wardrobe data based on user_id
+  const [editingField, setEditingField] = useState(null); // Track the field being edited
+  const [imageFile, setImageFile] = useState(null); // State for the selected image file
+
+  // Function to fetch user profile and wardrobe data
+  const fetchUserProfile = async () => {
+    try {
+      const response = await api.get(`/myprofile/${user_id}/`);
+      setProfile(response.data.profile); // Set the profile data
+      setWardrobe(response.data.wardrobe); // Set the wardrobe data
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }  
+  };
+
+  // Fetch user profile and wardrobe data on mount
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await api.get(`/myprofile/${user_id}/`);
-        setProfile(response.data.profile); // Set the profile data
-        setWardrobe(response.data.wardrobe); // Set the wardrobe data
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }  
-    };
     fetchUserProfile(); 
   }, [user_id]);
 
@@ -43,17 +58,52 @@ export default function PersonalProfile() {
     history.push('/'); // Redirect to login page
   };
 
-  // Placeholder for handling profile updates
+  // Function to handle profile updates
   const handleUpdateProfile = async () => {
+    const updatedProfile = new FormData(); // Create FormData object
+    updatedProfile.append('name', profile.name);
+    updatedProfile.append('email', profile.email);
+    updatedProfile.append('bio', profile.bio);
+    updatedProfile.append('skin_tone', profile.skin_tone);
+    updatedProfile.append('height', profile.height);
+    updatedProfile.append('weight', profile.weight);
+    updatedProfile.append('age', profile.age);
+    updatedProfile.append('gender', profile.gender);
+    updatedProfile.append('waist', profile.waist);
+
+    // Append the selected image file if available
+    if (imageFile) {
+      updatedProfile.append('captured_image', imageFile);
+    }
+
     try {
-      const updatedProfile = { profile }; // Use the existing profile state
-      await api.put(`/profile/${user_id}/`, updatedProfile); // Send updated profile to backend via PUT request
-      alert('Profile updated successfully!');
+      await api.patch(`/myprofile/${user_id}/`, updatedProfile, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the content type
+        },
+      }); // PATCH request
+      alert(`Profile updated successfully!`);
+      setEditingField(null); // Reset editing field
+      fetchUserProfile(); // Refresh user profile after update
+      setImageFile(null); // Reset image file after upload
     } catch (error) {
       console.error('Error updating profile:', error);
     }
   };
 
+  // Function to handle input change
+  const handleInputChange = (event) => {
+    const { name, value } = event.target; // Destructure the name and value
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      [name]: value,
+    }));
+  };
+
+  // Function to handle image file change
+  const handleImageChange = (event) => {
+    setImageFile(event.target.files[0]); // Get the selected file
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -64,8 +114,8 @@ export default function PersonalProfile() {
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-start h-100">
           {/* Left: Profile Information */}
-          <MDBCol lg="5" className="mb-4 mb-lg-0"> {/* Changed lg from 4 to 5 */}
-            <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }}> {/* Added width: 100% */}
+          <MDBCol lg="5" className="mb-4 mb-lg-0"> 
+            <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }}>
               <MDBRow className="g-0">
                 <MDBCol md="9" className="gradient-custom text-center text-white"
                   style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
@@ -76,9 +126,12 @@ export default function PersonalProfile() {
                     style={{ width: '100px' }} 
                     fluid 
                   />
-                  <MDBTypography tag="h5">{profile.name}</MDBTypography>
-                  <MDBCardText>{profile.bio || 'Fashion Enthusiast'}</MDBCardText>
-                  <MDBIcon far icon="edit" className="mb-5" />
+                  
+                  <MDBTypography tag="h5" className="font-weight-bold" style={{ fontSize: '1.5rem', fontFamily: 'Arial, sans-serif', color: 'black' }}>
+  {`${profile.name} ${profile.lastname || ''}`.trim() || 'Fashion Enthusiast'}
+</MDBTypography>
+
+                  <MDBBtn color="danger" onClick={handleLogout}>Logout</MDBBtn> {/* Logout Button */}
                 </MDBCol>
                 <MDBCol md="8">
                   <MDBCardBody className="p-4">
@@ -87,55 +140,154 @@ export default function PersonalProfile() {
                     <MDBRow className="pt-1">
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Email</MDBTypography>
-                        <MDBCardText className="text-muted">{profile.email}</MDBCardText>
+                        {editingField === 'email' ? (
+                          <>
+                            <input
+                              type="text"
+                              name="email"
+                              value={profile.email}
+                              onChange={handleInputChange}
+                              style={{ width: '100%' }}
+                            />
+                            <MDBIcon far icon="save" onClick={handleUpdateProfile} style={{ cursor: 'pointer' }} />
+                          </>
+                        ) : (
+                          <>
+                            <MDBCardText className="text-muted">{profile.email}</MDBCardText>
+                            <MDBIcon far icon="edit" onClick={() => setEditingField('email')} style={{ cursor: 'pointer' }} />
+                          </>
+                        )}
                       </MDBCol>
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Skintone</MDBTypography>
-                        <MDBCardText className="text-muted">{profile.skin_tone}</MDBCardText>
+                        {editingField === 'skin_tone' ? (
+                          <>
+                            <input
+                              type="text"
+                              name="skin_tone"
+                              value={profile.skin_tone}
+                              onChange={handleInputChange}
+                              style={{ width: '100%' }}
+                            />
+                            <MDBIcon far icon="save" onClick={handleUpdateProfile} style={{ cursor: 'pointer' }} />
+                          </>
+                        ) : (
+                          <>
+                            <MDBCardText className="text-muted">{profile.skin_tone}</MDBCardText>
+                            <MDBIcon far icon="edit" onClick={() => setEditingField('skin_tone')} style={{ cursor: 'pointer' }} />
+                          </>
+                        )}
                       </MDBCol>
                     </MDBRow> 
 
                     <MDBRow className="pt-1">
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Height</MDBTypography>
-                        <MDBCardText className="text-muted">{profile.height}</MDBCardText>
+                        {editingField === 'height' ? (
+                          <>
+                            <input
+                              type="text"
+                              name="height"
+                              value={profile.height}
+                              onChange={handleInputChange}
+                              style={{ width: '100%' }}
+                            />
+                            <MDBIcon far icon="save" onClick={handleUpdateProfile} style={{ cursor: 'pointer' }} />
+                          </>
+                        ) : (
+                          <>
+                            <MDBCardText className="text-muted">{profile.height}</MDBCardText>
+                            <MDBIcon far icon="edit" onClick={() => setEditingField('height')} style={{ cursor: 'pointer' }} />
+                          </>
+                        )}
                       </MDBCol>
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Weight</MDBTypography>
-                        <MDBCardText className="text-muted">{profile.weight}</MDBCardText>
+                        {editingField === 'weight' ? (
+                          <>
+                            <input
+                              type="text"
+                              name="weight"
+                              value={profile.weight}
+                              onChange={handleInputChange}
+                              style={{ width: '100%' }}
+                            />
+                            <MDBIcon far icon="save" onClick={handleUpdateProfile} style={{ cursor: 'pointer' }} />
+                          </>
+                        ) : (
+                          <>
+                            <MDBCardText className="text-muted">{profile.weight}</MDBCardText>
+                            <MDBIcon far icon="edit" onClick={() => setEditingField('weight')} style={{ cursor: 'pointer' }} />
+                          </>
+                        )}
                       </MDBCol>
                     </MDBRow>
 
                     <MDBRow className="pt-1">
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Age</MDBTypography>
-                        <MDBCardText className="text-muted">{profile.age}</MDBCardText>
-                      </MDBCol>
-                      <MDBCol size="6" className="mb-3">
-                        <MDBTypography tag="h6">Gender</MDBTypography>
-                        <MDBCardText className="text-muted">{profile.gender}</MDBCardText>
+                        {editingField === 'age' ? (
+                          <>
+                            <input
+                              type="text"
+                              name="age"
+                              value={profile.age}
+                              onChange={handleInputChange}
+                              style={{ width: '100%' }}
+                            />
+                            <MDBIcon far icon="save" onClick={handleUpdateProfile} style={{ cursor: 'pointer' }} />
+                          </>
+                        ) : (
+                          <>
+                            <MDBCardText className="text-muted">{profile.age}</MDBCardText>
+                            <MDBIcon far icon="edit" onClick={() => setEditingField('age')} style={{ cursor: 'pointer' }} />
+                          </>
+                        )}
                       </MDBCol>
                       <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Waist</MDBTypography>
-                        <MDBCardText className="text-muted">{profile.waist}</MDBCardText>
+                        {editingField === 'waist' ? (
+                          <>
+                            <input
+                              type="text"
+                              name="waist"
+                              value={profile.waist}
+                              onChange={handleInputChange}
+                              style={{ width: '100%' }}
+                            />
+                            <MDBIcon far icon="save" onClick={handleUpdateProfile} style={{ cursor: 'pointer' }} />
+                          </>
+                        ) : (
+                          <>
+                            <MDBCardText className="text-muted">{profile.waist}</MDBCardText>
+                            <MDBIcon far icon="edit" onClick={() => setEditingField('waist')} style={{ cursor: 'pointer' }} />
+                          </>
+                        )}
                       </MDBCol>
                     </MDBRow>
-                    {/* Update Profile Button */}
-                    <Link to={`/profile/${user_id}/`}>
-                      <MDBBtn className="mt-2 d-block">
-                        Update Profile
-                      </MDBBtn>
-                    </Link>
-                    {/* Logout Button */}
-                    <MDBBtn className="mt-2 d-block btn btn-danger" onClick={handleLogout}>Logout</MDBBtn>
+
+                    {/* Image Upload Section */}
+                    <MDBRow className="pt-1">
+                      <MDBCol size="12" className="mb-3">
+                        <MDBTypography tag="h6">Profile Image</MDBTypography>
+                        <input type="file" accept="image/*" onChange={handleImageChange} />
+                        {imageFile && (
+                          <MDBBtn color="primary" onClick={handleUpdateProfile}>
+                            Update Image
+                          </MDBBtn>
+                        )}
+                      </MDBCol>
+                    </MDBRow>
+
                   </MDBCardBody>
                 </MDBCol>
               </MDBRow>
             </MDBCard>
           </MDBCol>
 
-          {/* Right: My Wardrobe Section */}
-          <MDBCol lg="7"> {/* Changed lg from 8 to 7 */}
+          {/* Right: Wardrobe Items */}
+           {/* Right: My Wardrobe Section */}
+           <MDBCol lg="7"> {/* Changed lg from 8 to 7 */}
             <MDBTypography tag="h5" className="mb-3">My Wardrobe (Wishlist)</MDBTypography>
             {wardrobe.length > 0 ? (
               wardrobe.map((item) => (
@@ -177,7 +329,6 @@ export default function PersonalProfile() {
               <MDBTypography tag="h6" className="text-muted">No items in wardrobe</MDBTypography>
             )}
           </MDBCol>
-
         </MDBRow>
       </MDBContainer>
     </section>

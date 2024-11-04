@@ -35,20 +35,22 @@ class UserLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=255)
 
     class Meta: 
-        model = User 
+        model = User  
         fields = ['email', 'password']
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email', read_only=True)  # Include email from related User model
+    name = serializers.CharField(source='user.firstname', read_only=True)
+    lastname = serializers.CharField(source='user.lastname', read_only=True)
 
     class Meta:
         model = Profile
-        fields = ['email','height', 'weight', 'age', 'gender', 'skin_tone', 'waist', 'captured_image']
+        fields = ['email','name','lastname','height', 'weight', 'age', 'gender', 'skin_tone', 'waist', 'captured_image']
 
     def create(self, validated_data):
         return Profile.objects.create(**validated_data)
-
+ 
 
 from .models import Wardrobe
 class WardrobeSerializer(serializers.ModelSerializer):
@@ -57,7 +59,7 @@ class WardrobeSerializer(serializers.ModelSerializer):
         fields = ['Id_Product', 'Product_URL', 'URL_image', 'Description', 'Price', 'added_date']
 
 
-
+ 
 
 
 # change password serializer
