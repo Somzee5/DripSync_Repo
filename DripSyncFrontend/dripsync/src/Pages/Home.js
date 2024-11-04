@@ -28,7 +28,7 @@ const Home = () => {
         setWaist(response.data.waist);     // Get waist
         setSkintone(response.data.skintone);
 
-        // Set gender based on the response
+        // Set gender based on the response 
         if(response.data.gender === 'Male')
           setGender('men');
         else  

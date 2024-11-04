@@ -7,30 +7,29 @@ app = Flask(__name__)
 CORS(app)
 
 male_categories = [
-    'Graphic T-Shirts', 'Henley T-Shirts', 'Polo T-Shirts', 'Casual Shirts', 
-    'Formal Shirts', 'Round Neck T-Shirts', 'V-Neck T-Shirts', 'Pullovers', 
-    'Oversized T-Shirts', 'Sweatshirts', 'Hoodies', 'Cardigans', 'Blazers', 
-    'Jackets', 'Denim Jackets', 'Leather Jackets', 'Bomber Jackets', 'Biker Jackets', 
-    'Puffer Jackets', 'Coats', 'Trench Coats', 'Parkas', 'Overcoats', 'Vests', 
-    'Puffer Vests', 'Waistcoats', 'Cargo Pants', 'Chinos', 'Joggers', 'Track Pants', 
-    'Trousers', 'Denim Shorts', 'Cargo Shorts', 'Bermuda Shorts', 'Athletic Shorts', 
-    'Casual Shorts', 'Lounge Shorts'
+     'Polo T-Shirts',  
+    'Formal Shirts', 'V-Neck T-Shirts', 'Pullovers', 
+    'Oversized T-Shirts', 'Sweatshirts', 'Hoodies', 'Blazers'
+    , 'Denim Jackets', 'Leather Jackets',
+     'Coats', 
+     'Cargo Pants', 'Chinos', 'Joggers', 'Track Pants', 'Shorts', 
+    'Trousers', 'Denim Shorts', 'Cargo Shorts', 'Bermuda Shorts', 'Lounge Shorts'
 ]
 
 female_categories = [
     'Mini', 'Bodycon', 'Wrap', 'Shift', 'A-line', 'Skater', 'Slip', 'Halter', 
-    'Off-Shoulder', 'Peplum', 'Sheath', 'Midi', 'Maxi', 'Halter', 'Off-Shoulder T-Shirts', 
-    'Skirts', 'Blazer Sets', 'Blouses', 'Lehengas', 'Anarkali', 'Sarees', 'Salwar Suits',
-    'Sharara Sets', 'Ethnic Jackets', 'Sports Bras', 'Leggings', 'Yoga Pants',
-    'Palazzos', 'Culottes', 'Skorts', 'High-Waisted Skirts', 'Peplum Skirts',
-    'Pant Suits', 'Skirt Suits', 'Co-ord Sets'
+    'Off-Shoulder', 'Peplum', 'Sheath', 'Midi', 'Maxi', 'Halter', 
+    'Skirts', 'Blazer', 'Blouses', 'Anarkali', 'Sarees', 'Salwar',
+    'Sharara ', 'Leggings',
+    'Palazzos', 'Culottes', 
+    'Pant', 'Skirt', 'Co-ord'
 ]
 
 unisex_categories = [
-    'Shirts', 'T-Shirts', 'Pullover Sweaters', 'Oversized Shirts',
-    'Button-Down Shirts', 'Sweatshirts', 'Hoodies', 'Blazers', 'Denim Jackets', 
-    'Jackets', 'Cropped Trousers', 
-    'Graphic T-Shirts', 'Wrap Tops', 'Sweaters'
+    # 'Shirts', 'T-Shirts',
+    #  'Sweatshirts', 'Hoodies', 'Blazers', 'Denim Jackets', 
+    # 'Jackets', 'Cropped Trousers' 
+    # , 'Sweaters'
 ]
 
 # Load similarity matrices for recommendations
