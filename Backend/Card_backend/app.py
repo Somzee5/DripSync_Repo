@@ -23,7 +23,7 @@ female_categories = [
     'Sharara ', 'Leggings',
     'Palazzos', 'Culottes', 
     'Pant', 'Skirt', 'Co-ord'
-]
+] 
 
 unisex_categories = [
     # 'Shirts', 'T-Shirts',

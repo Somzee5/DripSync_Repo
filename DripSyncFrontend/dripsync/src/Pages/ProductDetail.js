@@ -53,7 +53,7 @@ const ProductDetail = () => {
     history.push('/try-on', { productImage: product.URL_image });
   };
 
-  const addToWardrobe = async () => {
+  const addToWardrobe = async () => { 
     const userId = sessionStorage.getItem('user_id');
 
     const data = {

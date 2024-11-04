@@ -22,7 +22,7 @@ export default function PersonalProfile() {
         console.error('Error fetching user profile:', error);
       }  
     };
-    fetchUserProfile();
+    fetchUserProfile(); 
   }, [user_id]);
 
   // Function to handle removal of an item from wardrobe

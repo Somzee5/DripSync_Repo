@@ -1,118 +1,115 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './TryOn.css';
+import api from '../utils/api';
 
 const TryOn = () => {
   const location = useLocation();
-  const [originalImage, setOriginalImage] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
   const [virtualTryOnImage, setVirtualTryOnImage] = useState(null);
-
+  
   const productImageURL = location.state?.productImage;
-  console.log("Product Image URL:", productImageURL);
 
-  const handleImageUpload = (event) => {
-    setOriginalImage(event.target.files[0]);
-  };
+  useEffect(() => {
+    // Retrieve the user_id from sessionStorage
+    const storedUserId = sessionStorage.getItem('user_id');
+    if (storedUserId) {
+      setUserId(storedUserId);
+      
+      // Fetch user's profile image (captured_image) from the backend
+      const fetchProfileImage = async () => {
+        try {
+          const response = await api.get(`/myprofile/${storedUserId}/`);
+          const profileImageUrl = `http://127.0.0.1:8000${response.data.profile.captured_image}`;
+          
+          // Convert profile image URL to Blob
+          const imageResponse = await fetch(profileImageUrl, { mode: 'cors' });
+          const imageBlob = await imageResponse.blob();
+          setCapturedImage(imageBlob);
+        } catch (error) {
+          console.error('Error fetching profile image:', error);
+        }
+      };
+
+      fetchProfileImage();
+    } else {
+      console.error('User ID not found in session storage');
+    }
+  }, []);
 
   const handleSubmit = async () => {
-    if (!originalImage) {
-      alert('Please upload an image first!');
+    if (!capturedImage) {
+      alert('Profile image not found. Please ensure you have a profile image.');
       return;
     }
 
     const formData = new FormData();
-    formData.append('original_image', originalImage);
+    formData.append('original_image', capturedImage, 'original_image.jpg');
 
     try {
       if (productImageURL) {
         // Fetch the product image from the URL
         const response = await fetch(productImageURL, { mode: 'cors' });
-        if (!response.ok) {
-          console.error('Failed to fetch product image from URL');
-          alert('Could not fetch product image.');
-          return;
-        }
-        
-        // Convert the response to a blob and create a new image from it
         const blob = await response.blob();
-        const image = new Image();
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
 
-        image.src = URL.createObjectURL(blob);
-        
-        image.onload = async () => {
-          // Set the canvas dimensions to the image dimensions
-          canvas.width = image.width;
-          canvas.height = image.height;
-          ctx.drawImage(image, 0, 0);
+        // Convert product image blob to JPEG and append to formData
+        const productImageBlob = await new Promise((resolve) => {
+          const image = new Image();
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          image.src = URL.createObjectURL(blob);
 
-          // Convert the canvas to a JPEG blob
-          canvas.toBlob(async (jpegBlob) => {
-            formData.append('product_image', jpegBlob, 'product_image.jpg');
+          image.onload = () => {
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0);
+            canvas.toBlob(resolve, 'image/jpeg');
+          };
+        });
 
-            // Send the request to the backend
-            const res = await fetch('http://localhost:5001/try-on', {
-              method: 'POST',
-              body: formData,
-            });
+        formData.append('product_image', productImageBlob, 'product_image.jpg');
 
-            if (res.ok) {
-              const result = await res.json();
-              setVirtualTryOnImage(`http://localhost:5001/${result.result_image}`);
-            } else {
-              console.error('Failed to fetch the virtual try-on result.');
-              alert('Virtual try-on failed. Please check the backend logs for more details.');
-            }
-          }, 'image/jpeg');
-        };
-      } else {
-        console.error('Product image URL is missing.');
-        alert('Product image URL is required.');
-        return;
+        // Send data to Flask backend for try-on processing
+        const res = await fetch('http://localhost:5001/try-on', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          const result = await res.json();
+          setVirtualTryOnImage(`http://localhost:5001/${result.result_image}`);
+        } else {
+          console.error('Virtual try-on failed.');
+          alert('Could not process the try-on.');
+        }
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred while processing the request.');
+      alert('An error occurred during virtual try-on.');
     }
   };
 
   return (
     <div className="try-on-container">
       <div className="try-on-card">
-        <h3>Original Image</h3>
-        <label htmlFor="file-upload" className="file-upload-label">
-          Choose Image
-        </label>
-        <input
-          id="file-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          style={{ display: 'none' }}
-        />
-        {originalImage && (
-          <img
-            src={URL.createObjectURL(originalImage)}
-            alt="Original"
-            className="try-on-image"
-          />
-        )}
+        <h3>Your Profile Image</h3>
+        {capturedImage ? (
+          <img src={URL.createObjectURL(capturedImage)} alt="Profile" className="try-on-image" />
+        ) : (
+          <p>Loading profile image...</p>
+        )} 
       </div>
       <div className="try-on-card">
         <h3>Virtual Try-On Result</h3>
         {virtualTryOnImage ? (
-          <img
-            src={virtualTryOnImage}
-            alt="Virtual Try-On"
-            className="try-on-image"
-          />
+          <img src={virtualTryOnImage} alt="Virtual Try-On" className="try-on-image" />
         ) : (
           <p>No virtual try-on result yet.</p>
         )}
       </div>
       <button onClick={handleSubmit} className="submit-button">
-        Submit
+        Try On
       </button>
     </div>
   );
