@@ -1,63 +1,44 @@
 import React, { useState } from 'react';
-import api from '../utils/api'; // Assuming axios is configured here
 import { useParams, useHistory } from 'react-router-dom';
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBInput, 
-  MDBBtn,
-} from 'mdb-react-ui-kit';
+import api from '../utils/api';
 
-const Profile = () => {
-  const history = useHistory();
+export default function Profile() {
   const { user_id } = useParams();
+  const history = useHistory();
 
   const [profileData, setProfileData] = useState({
-    age: '',
-    height: '', 
+    gender: '',
+    height: '',
     weight: '',
+    age: '', 
     waist: '',
-    gender: 'M',
-    skin_tone: 'EF',
-    captured_image: null, // For file upload, store the file here
+    skin_tone: '',
+    captured_image: null,
   });
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfileData((prevData) => ({ ...prevData, [name]: value }));
+    setProfileData({ ...profileData, [name]: value });
   };
 
-  // Handle image file upload
   const handleFileChange = (e) => {
-    setProfileData((prevData) => ({ ...prevData, captured_image: e.target.files[0] }));
+    setProfileData({ ...profileData, captured_image: e.target.files[0] });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('age', profileData.age);
-    formData.append('height', profileData.height);
-    formData.append('weight', profileData.weight);
-    formData.append('waist', profileData.waist);
-    formData.append('gender', profileData.gender);
-    formData.append('skin_tone', profileData.skin_tone);
 
-    // Append image file if selected
-    if (profileData.captured_image) {
-      formData.append('captured_image', profileData.captured_image);
-    }
- 
+    const formData = new FormData();
+    Object.entries(profileData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
     try {
-      const response = await api.post(`/profile/${user_id}/`, formData, {
+      await api.post(`/profile/${user_id}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Profile created:', response.data);
-
       history.push('/home');
     } catch (error) {
       console.error('Error creating profile:', error.response?.data || error.message);
@@ -65,121 +46,135 @@ const Profile = () => {
   };
 
   return (
-    <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden'>
-  <MDBRow className="justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-    <MDBCol md='6' lg='9' className='position-relative'>
-      <MDBCard className='my-5 bg-glass'>
-        <MDBCardBody className='p-5'>
-          <h1 className='text-center mb-4'>Create Profile</h1>
-          <form onSubmit={handleSubmit}>
-            {/* Age Input */}
-            <MDBInput
-              wrapperClass='mb-4'
-              label='Age'
-              id='age'
-              type='number'
-              name='age'
-              value={profileData.age}
-              onChange={handleInputChange}
-              required
-            />
+    <div className="flex h-screen bg-black">
+      <div className="flex flex-col justify-center items-start w-1/2 px-10">
+        <h1 className="text-6xl font-extrabold text-indigo-400 tracking-wide">DripSync</h1>
+      </div>
 
-            {/* Height Input */}
-            <MDBInput
-              wrapperClass='mb-4'
-              label='Height (in cm)'
-              id='height'
-              type='number'
-              name='height'
-              value={profileData.height}
-              onChange={handleInputChange}
-              required
-            />
-
-            {/* Weight Input */}
-            <MDBInput
-              wrapperClass='mb-4'
-              label='Weight (in kg)'
-              id='weight'
-              type='number'
-              name='weight'
-              value={profileData.weight}
-              onChange={handleInputChange}
-              required
-            />
-
-            {/* Waist Input */}
-            <MDBInput
-              wrapperClass='mb-4'
-              label='Waist Size (in cm)'
-              id='waist'
-              type='number'
-              name='waist'
-              value={profileData.waist}
-              onChange={handleInputChange}
-              required
-            />
-
-            {/* Gender Select */}
-            <div className='mb-4'>
-              <label className='form-label'>Gender</label>
+      <div className="flex justify-center items-center w-1/2 bg-gray-900 p-10">
+        <div className="w-full max-w-sm space-y-6">
+          <h2 className="text-center text-2xl font-semibold text-gray-100">Create Your Profile</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="gender" className="block text-sm font-medium text-gray-300">Gender</label>
               <select
-                className='form-select'
-                name='gender'
+                id="gender"
+                name="gender"
+                required
                 value={profileData.gender}
-                onChange={handleInputChange}
-                required
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 py-2 px-3 text-white focus:ring-indigo-500"
               >
-                <option value='M'>Male</option>
-                <option value='F'>Female</option>
-                {/* You can add more options if needed */}
+                <option value="" disabled>Select your gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
               </select>
             </div>
 
-            {/* Skin Tone Select */}
-            <div className='mb-4'>
-              <label className='form-label'>Skin Tone</label>
-              <select
-                className='form-select'
-                name='skin_tone'
-                value={profileData.skin_tone}
-                onChange={handleInputChange}
-                required
-              >
-                <option value='ES'>Extremely Fair Skin</option>
-                <option value='OS'>Olive Skin</option>
-                <option value='MS'>Medium Skin Undertone</option>
-                <option value='NS'>Neutral Skin Undertone</option>
-                <option value='BS'>Brown Skin</option>
-                <option value='DS'>Dark Skin</option>
-
-              </select>
-            </div>
-
-            {/* Image Upload */}
-            <div className='mb-4'>
-              <label className='form-label'>Upload Image</label>
+            <div>
+              <label htmlFor="height" className="block text-sm font-medium text-gray-300">Height (in cm)</label>
               <input
-                type='file'
-                className='form-control'
-                name='captured_image'
-                onChange={handleFileChange}
-                accept='image/*'
+                id="height"
+                name="height"
+                type="number"
+                required
+                value={profileData.height}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 py-2 px-3 text-white focus:ring-indigo-500"
               />
             </div>
 
-            {/* Submit Button */}
-            <MDBBtn className='w-100 mb-4' size='md' type='submit'>
+            <div>
+              <label htmlFor="weight" className="block text-sm font-medium text-gray-300">Weight (in kg)</label>
+              <input
+                id="weight"
+                name="weight"
+                type="number"
+                required
+                value={profileData.weight}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 py-2 px-3 text-white focus:ring-indigo-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Skin Tone</label>
+              <div className="flex space-x-4">
+                {[
+                  { id: 'EF', name: 'Extremely Fair Skin', color: '#ffe5d9' },
+                  { id: 'OS', name: 'Olive Skin', color: '#d3a561' },
+                  { id: 'MS', name: 'Medium Skin Undertone', color: '#c1a083' },
+                  { id: 'NS', name: 'Neutral Skin Undertone', color: '#b68d7a' },
+                  { id: 'BS', name: 'Brown Skin', color: '#8c603b' },
+                  { id: 'DK', name: 'Dark Skin', color: '#59382d' },
+                ].map((tone) => (
+                  <div key={tone.id} className="flex items-center">
+                    <input
+                      type="radio"
+                      id={tone.id}
+                      name="skin_tone"
+                      value={tone.id}
+                      required
+                      checked={profileData.skin_tone === tone.id}
+                      onChange={handleChange}
+                      className="hidden peer"
+                    />
+                    <label
+                      htmlFor={tone.id}
+                      className="block w-8 h-8 rounded-full cursor-pointer peer-checked:ring-2 peer-checked:ring-indigo-500"
+                      style={{ backgroundColor: tone.color }}
+                      title={tone.name} // Tooltip on hover
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
+            <div>
+              <label htmlFor="waist" className="block text-sm font-medium text-gray-300">Waist (in cm)</label>
+              <input
+                id="waist"
+                name="waist"
+                type="number"
+                required
+                value={profileData.waist}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 py-2 px-3 text-white focus:ring-indigo-500"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="age" className="block text-sm font-medium text-gray-300">Age</label>
+              <input
+                id="age"
+                name="age"
+                type="number"
+                required
+                value={profileData.age}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 py-2 px-3 text-white focus:ring-indigo-500"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="captured_image" className="block text-sm font-medium text-gray-300">Upload Image</label>
+              <input
+                id="captured_image"
+                type="file"
+                name="captured_image"
+                onChange={handleFileChange}
+                accept="image/*"
+                className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 py-2 px-3 text-white focus:ring-indigo-500"
+              />
+            </div>
+
+            <button type="submit" className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600">
               Create Profile
-            </MDBBtn>
+            </button>
           </form>
-        </MDBCardBody>
-      </MDBCard>
-    </MDBCol>
-  </MDBRow>
-</MDBContainer>
-
+        </div>
+      </div>
+    </div>
   );
-};
-
-export default Profile;
+}

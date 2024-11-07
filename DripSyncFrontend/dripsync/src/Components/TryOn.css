@@ -1,51 +1,72 @@
+/* Ensure the body and html elements take full height */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Update the try-on container to span the full height and have horizontal layout */
 .try-on-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .try-on-card {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    width: 300px;
-    text-align: center;
-  }
-  
-  .try-on-image { 
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-top: 10px;
-  }
-  
-  .file-upload-label {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: inline-block;
-  }
-  
-  .file-upload-label:hover {
-    background-color: #0056b3;
-  }
-  
-  .submit-button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .submit-button:hover {
-    background-color: #218838;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align cards at the top */
+  gap: 20px;
+  padding: 20px;
+  background-color: #111817;
+  height: 100vh; /* Full height of the viewport */
+  flex-direction: row; /* Keep the cards side by side */
+  flex-wrap: wrap; /* Allow wrapping if screen is too small */
+}
+
+/* Styles for the try-on card */
+.try-on-card {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+}
+
+/* Style for images inside the cards */
+.try-on-image { 
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* File upload button styling */
+.file-upload-label {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.file-upload-label:hover {
+  background-color: #0056b3;
+}
+
+/* Updated button styles */
+.submit-button {
+  background-color: #9333EA; /* New color for the button */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Button hover effect */
+.submit-button:hover {
+  background-color: #7c2d8f; /* Slightly darker purple on hover */
+}
+
+/* Ensure button is placed below both cards */
+.try-on-container button {
+  align-self: center;
+  margin-top: 20px;
+}

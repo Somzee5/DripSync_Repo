@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom';
 import { MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import './ProductCard.css';
 import HeroSection from './HeroSection'; // Import HeroSection
+import Loader from './Loader'; // Import Loader component
 
 const ProductCard = () => {
   const path = window.location.pathname.split('/');
-  const gender = path[2]; 
+  const gender = path[2];
   const taskId = path[3];
 
   const [cards, setCards] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [subcategory, setSubcategory] = useState('');
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     setSearchTerm(taskId);
@@ -26,8 +28,10 @@ const ProductCard = () => {
       }
       const data = await response.json();
       setCards(data);
+      setLoading(false); // Set loading to false when data is fetched
     } catch (error) {
       console.error('Error fetching data:', error);
+      setLoading(false); // Set loading to false in case of an error
     }
   };
 
@@ -59,7 +63,7 @@ const ProductCard = () => {
     <>
       <HeroSection /> {/* Render the navbar on top of this page */}
       <div className="card-container">
-        {cards.length > 0 ? renderCards() : <div>No cards available!</div>}
+        {loading ? <Loader /> : (cards.length > 0 ? renderCards() : <div>No cards available!</div>)}
       </div>
     </>
   );

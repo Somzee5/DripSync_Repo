@@ -1,50 +1,49 @@
 .animated-card {
-    transition: transform 0.3s ease;
-  }
-  
-  /* Removed hover effect for skin tone dropdown */
-  .custom-select {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-  }
-  
-  .custom-select select {
-    appearance: none;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-    background: #fff;
-    background-image: none; /* Remove default dropdown arrow */
-    background-color: transparent; /* Make it transparent */
-  }
-  
-  /* Adjusted styles for the skin tone dropdown */
-  .custom-select select:focus {
-    outline: none; /* Removes outline on focus */
-  }
-  
-  .custom-select::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #333; /* Arrow color */
-    transform: translateY(-50%);
-  }
-  
-  .color-swatch {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin-right: 8px;
-    vertical-align: middle;
-  }
-  
-  
-  
+  transition: transform 0.3s ease;
+}
+
+/* Removed hover effect for skin tone dropdown */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+} 
+
+.custom-select select {
+  appearance: none;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  background: #fff;
+  background-image: none; /* Remove default dropdown arrow */
+  background-color: transparent; /* Make it transparent */
+}
+
+/* Adjusted styles for the skin tone dropdown */
+.custom-select select:focus {
+  outline: none; /* Removes outline on focus */
+}
+
+.custom-select::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #333; /* Arrow color */
+  transform: translateY(-50%);
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+

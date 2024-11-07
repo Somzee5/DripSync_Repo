@@ -10,7 +10,7 @@ const RecommendedCard = () => {
   const gender = path[3];
   const taskId = path[4]; // Updated to use taskId instead of category
 
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState([]); 
   const [error, setError] = useState(null);
 
   useEffect(() => {

@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../utils/api';
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol, 
-  MDBCard,
-  MDBCardBody,
-  MDBInput,
-} from 'mdb-react-ui-kit';
+import logo from './lodo.jpg'; // Importing the image
 
 const Login = () => {
   const history = useHistory();
@@ -28,11 +20,8 @@ const Login = () => {
       const { access, user_id } = response.data;
       sessionStorage.setItem('access_token', access);
       sessionStorage.setItem('user_id', user_id);
-
       history.push('/home');
-    } 
-    catch (error)  
-    {
+    } catch (error) {
       setError('Invalid email or password');
     }
   };
@@ -59,98 +48,121 @@ const Login = () => {
       setOtp('');
       setNewPassword('');
       setShowOtpInput(false);
-      history.push('/'); // Redirect to login page after successful reset
+      history.push('/');
     } catch (error) {
       setOtpError('Invalid or expired OTP');
     }
   };
 
   return (
-    <MDBContainer fluid className='p-3 background-radial-gradient overflow-hidden'>
-      <MDBRow className="justify-content-center align-items-center">
-        <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
-          <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 95%)' }}>
-            DripSync<br />
-            <span style={{ color: 'hsl(218, 81%, 75%)' }}>outfits for you!</span>
-          </h1>
-          <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
-            DripSync today to unlock personalized outfit suggestions tailored to your style and body type. Create your profile and start your fashion journey with AI-powered recommendations.
-          </p>
-        </MDBCol>
+    <div className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-gray-900 to-black text-gray-200">
+      <div className="w-full max-w-md space-y-8">
+        <div className="flex justify-center">
+          <img src={logo} alt="DripSync Logo" className="w-50 h-50 object-contain" />
+        </div>
+        <p className="text-center text-lg text-gray-300">
+          Unlock personalized outfit suggestions with AI-powered recommendations
+        </p>
 
-        <MDBCol md='6' className='position-relative'>
-          <MDBCard className='my-5 bg-glass' style={{ maxWidth: '600px', width: '600px', padding: '20px', margin: '0 auto' }}>
-            <MDBCardBody className='p-4'>
-              <div className="d-flex justify-content-end mb-4">
-                <MDBBtn size='md' onClick={() => history.push('/register')}>
-                  Sign Up
-                </MDBBtn>
+        <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={() => history.push('/register')}
+              className="text-sm font-semibold text-indigo-400 hover:text-indigo-300"
+            >
+              Sign Up
+            </button>
+          </div>
+
+          {!showOtpInput ? (
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full mt-2 p-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-indigo-500"
+                />
               </div>
 
-              {!showOtpInput ? (
-                <form onSubmit={handleLogin}>
-                  <MDBInput
-                    wrapperClass='mb-4'
-                    label='Email'
-                    id='email'
-                    type='email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <MDBInput
-                    wrapperClass='mb-4'
-                    label='Password'
-                    id='password'
-                    type='password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  {error && <p className="text-danger text-center">{error}</p>}
-                  <MDBBtn className='w-100 mb-4' size='md' type="submit">
-                    Log In
-                  </MDBBtn>
+              <div>
+                <label className="block text-sm font-medium">Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full mt-2 p-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
 
-                  <div className="text-center">
-                    <p>Forgot your password? <span style={{ color: '#1266f1', cursor: 'pointer' }} onClick={handleForgotPassword}>Reset it</span></p>
-                  </div>
-                </form>
-              ) : (
-                <form onSubmit={handleVerifyOtp}>
-                  <MDBInput
-                    wrapperClass='mb-4'
-                    label='Enter OTP'
-                    id='otp'
-                    type='text'
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    required
-                  />
-                  <MDBInput
-                    wrapperClass='mb-4'
-                    label='New Password'
-                    id='new-password'
-                    type='password'
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                  />
-                  {otpError && <p className="text-danger text-center">{otpError}</p>}
-                  <MDBBtn className='w-100 mb-4' size='md' type="submit">
-                    Verify OTP and Reset Password
-                  </MDBBtn>
-                  <div className="text-center">
-                    <p>Didn't receive the OTP? <span style={{ color: '#1266f1', cursor: 'pointer' }} onClick={handleForgotPassword}>Resend</span></p>
-                  </div>
-                </form>
-              )}
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+
+              <button
+                type="submit"
+                className="w-full py-3 rounded-lg bg-indigo-500 hover:bg-indigo-400 text-white font-bold shadow-md"
+              >
+                Log In
+              </button>
+
+              <div className="text-center mt-4">
+                <span
+                  onClick={handleForgotPassword}
+                  className="text-sm text-indigo-400 cursor-pointer hover:text-indigo-300"
+                >
+                  Forgot your password? Reset it
+                </span>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOtp} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium">Enter OTP</label>
+                <input
+                  type="text"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  required
+                  className="w-full mt-2 p-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium">New Password</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  className="w-full mt-2 p-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              {otpError && <p className="text-red-500 text-sm">{otpError}</p>}
+
+              <button
+                type="submit"
+                className="w-full py-3 rounded-lg bg-indigo-500 hover:bg-indigo-400 text-white font-bold shadow-md"
+              >
+                Verify OTP and Reset Password
+              </button>
+
+              <div className="text-center mt-4">
+                <span
+                  onClick={handleForgotPassword}
+                  className="text-sm text-indigo-400 cursor-pointer hover:text-indigo-300"
+                >
+                  Didn’t receive the OTP? Resend
+                </span>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default Login;

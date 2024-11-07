@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import HeroSection from '../Components/HeroSection';
 import { useParams, useHistory } from 'react-router-dom';
 import { 
   MDBCol, 
@@ -110,29 +111,38 @@ export default function PersonalProfile() {
   }
 
   return (
-    <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
+    <section className="vh-100" style={{ backgroundColor: '#111817', height: '100vh' }}>
+      <HeroSection /> {/* Render the navbar on top of this page */}
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-start h-100">
           {/* Left: Profile Information */}
           <MDBCol lg="5" className="mb-4 mb-lg-0"> 
             <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }}>
               <MDBRow className="g-0">
-                <MDBCol md="9" className="gradient-custom text-center text-white"
-                  style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
+              <MDBCol 
+                  md="9" 
+                  className="gradient-custom text-center text-white flex flex-col items-center justify-center" 
+                  style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}
+                >
                   <MDBCardImage 
                     src={profile.captured_image ? `http://127.0.0.1:8000${profile.captured_image}` : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"}
                     alt="Avatar" 
-                    className="my-5" 
-                    style={{ width: '100px' }} 
+                    className="my-5 mx-auto" 
+                    style={{ width: '120px'}} 
                     fluid 
                   />
-                  
-                  <MDBTypography tag="h5" className="font-weight-bold" style={{ fontSize: '1.5rem', fontFamily: 'Arial, sans-serif', color: 'black' }}>
-  {`${profile.name} ${profile.lastname || ''}`.trim() || 'Fashion Enthusiast'}
-</MDBTypography>
+
+                  <MDBTypography 
+                    tag="h5" 
+                    className="font-weight-bold text-black"
+                    style={{ fontSize: '1.5rem', fontFamily: 'Arial, sans-serif' }}
+                  >
+                    {`${profile.name} ${profile.lastname || ''}`.trim() || 'Fashion Enthusiast'}
+                  </MDBTypography>
 
                   <MDBBtn color="danger" onClick={handleLogout}>Logout</MDBBtn> {/* Logout Button */}
                 </MDBCol>
+
                 <MDBCol md="8">
                   <MDBCardBody className="p-4">
                     <MDBTypography tag="h6">Profile Information</MDBTypography>
@@ -288,7 +298,18 @@ export default function PersonalProfile() {
           {/* Right: Wardrobe Items */}
            {/* Right: My Wardrobe Section */}
            <MDBCol lg="7"> {/* Changed lg from 8 to 7 */}
-            <MDBTypography tag="h5" className="mb-3">My Wardrobe (Wishlist)</MDBTypography>
+           <MDBTypography
+            tag="h5"
+            className="mb-3 text-center"
+            style={{
+              fontWeight: "bold",
+              color: "#9333EA", // Darker color
+              fontFamily: "'Roboto', sans-serif" // Change font style if desired
+            }}
+          >
+            My Wardrobe <i className="fas fa-heart ml-2"></i>
+          </MDBTypography>
+          
             {wardrobe.length > 0 ? (
               wardrobe.map((item) => (
                 <MDBCard className="mb-3" style={{ borderRadius: '.5rem', width: '100%' }} key={item.Id_Product}> {/* Added width: 100% */}
@@ -304,7 +325,7 @@ export default function PersonalProfile() {
                     <MDBCol md="8">
                       <MDBCardBody>
                         <MDBTypography tag="h5">{item.Description}</MDBTypography>
-                        <MDBTypography tag="h6" className="text-muted">Price: ${item.Price}</MDBTypography>
+                        <MDBTypography tag="h6" className="text-muted">Price: Rs.{item.Price}</MDBTypography>
                         <MDBCardText><small className="text-muted">Added on: {new Date(item.added_date).toLocaleDateString()}</small></MDBCardText>
                         
                         {/* Replace product URL with a Buy Now button */}

@@ -1,0 +1,22 @@
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #121212; /* Dark background */
+  }
+  
+  .loader {
+    border: 10px solid #f3f3f3; /* Light gray border */
+    border-top: 10px solid #9b4dff; /* Purple border */
+    border-radius: 50%;
+    width: 100px; /* Larger circle */
+    height: 100px; /* Larger circle */
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

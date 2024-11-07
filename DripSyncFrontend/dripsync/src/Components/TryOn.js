@@ -112,7 +112,7 @@ const TryOn = () => {
         Try On
       </button>
     </div>
-  );
+  ); 
 };
 
 export default TryOn;

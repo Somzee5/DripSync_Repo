@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import HeroSection from '../Components/HeroSection';
-import TaskCard from '../Components/ProductCard';
 import api from '../utils/api';
 
 const Home = () => {
@@ -13,26 +11,20 @@ const Home = () => {
   const [waist, setWaist] = useState(null);
   const [skintone, setSkintone] = useState(null);
 
-  useEffect(() => { 
-    // Fetch the user ID and profile data from the backend API
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await api.get('/home', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you're using token-based auth
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        setUserID(response.data.user_id); // Directly use response.data.user_id
-        setHeight(response.data.height);   // Get height
-        setWeight(response.data.weight);   // Get weight
-        setWaist(response.data.waist);     // Get waist
+        setUserID(response.data.user_id);
+        setHeight(response.data.height);
+        setWeight(response.data.weight);
+        setWaist(response.data.waist);
         setSkintone(response.data.skintone);
-
-        // Set gender based on the response 
-        if(response.data.gender === 'Male')
-          setGender('men');
-        else  
-          setGender('women');
+        setGender(response.data.gender === 'Male' ? 'men' : 'women');
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -49,10 +41,8 @@ const Home = () => {
     }
   };
 
-  // Ensure HeroSection is rendered only when user_id is available
   return (
-    <MDBContainer fluid className="home-page">
-      {/* Hero Section */}
+    <div className="bg-black text-purple-500 min-h-screen p-5">
       {user_id && (
         <HeroSection 
           handleSearch={handleSearch} 
@@ -66,15 +56,36 @@ const Home = () => {
         />
       )}
 
-      {/* Product Cards
-      <MDBRow className="product-cards mt-5">
-        {products.map((product, index) => (
-          <MDBCol md="9" key={index}>
-            <TaskCard product={product} />
-          </MDBCol>
-        ))}
-      </MDBRow> */}
-    </MDBContainer>
+      {/* Horizontal Cards Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+        {/* New Arrivals Card */}
+        <div className="bg-purple-800 text-white p-5 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+          <h3 className="text-xl font-bold mb-3">New Arrivals</h3>
+          <p className="mb-4">Discover the latest styles and trends in fashion. New arrivals every week!</p>
+          <button className="bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition">
+            Shop Now
+          </button>
+        </div>
+
+        {/* Xmas Collection Card */}
+        <div className="bg-purple-800 text-white p-5 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+          <h3 className="text-xl font-bold mb-3">Xmas Collection</h3>
+          <p className="mb-4">Celebrate the holiday season in style with our exclusive Xmas collection.</p>
+          <button className="bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition">
+            Shop Now
+          </button>
+        </div>
+
+        {/* Traditionals Card */}
+        <div className="bg-purple-800 text-white p-5 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+          <h3 className="text-xl font-bold mb-3">Traditionals</h3>
+          <p className="mb-4">Embrace culture and heritage with our traditional wear collection.</p>
+          <button className="bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition">
+            Shop Now
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

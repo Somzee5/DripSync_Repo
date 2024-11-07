@@ -27,7 +27,6 @@ function App() {
         <ProtectedRoute exact path="/recommended/:skintone/:gender/:taskId" component={RecommendedCard} />
         <ProtectedRoute exact path="/recommended/:skintone/:gender/:taskId/:productId" component={RecommendedProductDetail} />
 
-
         <ProtectedRoute exact path="/home/recommended" component={ProductCard} />
         <ProtectedRoute exact path="/home/:gender/:subcategory/:productId" component={ProductDetail} />
         <ProtectedRoute path="/myprofile/:user_id" component={PersonalProfile} />

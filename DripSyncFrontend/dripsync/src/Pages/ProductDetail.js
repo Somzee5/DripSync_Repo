@@ -111,7 +111,7 @@ const ProductDetail = () => {
         </div>
       </div>
       <div className="recommendations">
-        <h2>You might also like:</h2>
+      <h2 class="text-gray-300">You might also like:</h2>
         <div className="recommendation-cards">
           {relatedProducts.map((relatedProduct) => (
             <div key={relatedProduct.Id_Product} className="recommendation-card">
