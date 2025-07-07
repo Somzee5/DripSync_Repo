@@ -5,7 +5,8 @@
 
 # 🧥 DripSync - Personalized Outfit Recommendation Platform
 
-> "Try it before you buy it" → Smart virtual try-ons and outfit recommendations
+> "Try it before you buy it" → Smart virtual try-ons and outfit recommendations.
+
 > Designed to enhance fashion e-commerce experiences by recommending outfits that align the best with the user's physical traits & preferences.
 
 ---
@@ -81,3 +82,81 @@ It aims to bridge the gap between **personal styling** and **e-commerce platform
 
 
 
+### 2️⃣ Two-Stage Outfit Recommendation Flow
+
+🎥 **[Demo Video Placeholder – YouTube link to be added here]**
+
+---
+
+
+
+
+## 📊 System Architecture / Flow
+
+<div align="center">
+  <table>
+    <tr>
+      <td>
+        <img src="Images/system_architecture.jpg" width="600"/>
+      </td>
+      <td style="vertical-align: top; padding-left: 20px; padding-top: 50px;">
+        <ul>
+          <li><strong>UserManager:</strong> Manages user registration and login sessions</li>
+          <li><strong>User:</strong> Stores physical traits like height, weight, skin tone, etc.</li>
+          <li><strong>RecommendationEngine:</strong> Filters outfits by body type & skin tone</li>
+          <li><strong>VirtualTryOn:</strong> Performs realistic cloth overlay using OpenCV</li>
+          <li><strong>Outfit:</strong> Contains product attributes like color, type, image</li>
+          <li><strong>Database:</strong> Stores user profiles, outfits & wishlist data</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
+
+
+
+
+## 🔮 Future Scope
+
+DripSync aims to evolve from a virtual try-on prototype to a full-fledged fashion-tech ecosystem. Some planned enhancements include:
+
+- 🧠 **Pose-aware Virtual Try-On:**  
+  Integrate **MediaPipe** or **MoveNet** to detect the user's pose in real-time, enabling better alignment and realistic try-ons even when body postures differ from the product model.
+
+- 🧳 **User’s Personal Wardrobe Integration:**  
+  Allow users to upload and manage their **real-life clothing inventory** — tops, jeans, shoes, etc.  
+  This acts like a **digital closet**, helping users visualize outfit combinations using AI.
+
+- 🗓️ **What-I-Wore Calendar (Inspired by LeetCode Streaks):**  
+  A smart calendar that tracks daily outfit history — letting users recall what they wore on specific days and avoid repetition.
+
+- ♻️ **AI-Based Outfit Reuse Suggestions for Sustainability:**  
+  Using wear history, detect underutilized clothes and suggest stylish combinations from the user’s wardrobe — promoting a **sustainable fashion lifestyle**.
+
+- ☁️ **Cloud Integration & Mobile App Support:**  
+  For large-scale deployment, user accounts and image processing can be shifted to cloud platforms like AWS/GCP, with a companion mobile app to allow on-the-go outfit planning.
+
+
+
+
+
+
+## 🙌 Credits & Acknowledgements
+
+- 👨‍💻 This project was developed as part of an academic initiative to explore the intersection of **AI**, **Computer Vision**, and **Fashion E-commerce**.
+  
+- 🤝 Special thanks to **Sagar Madane**, founder of a local t-shirt brand (**BOKA**), who reached out showing interest in adopting DripSync’s personalized outfit suggestion system to improve his customer experience.
+
+> 💌 Here's an excerpt from his message:
+>  
+> *"I think a personalized outfit suggestion platform could be a game-changer in helping my customers find the right styles and colors that work for them... I’d love to see how it could help improve my customer experience and stand out in the market."*
+
+- 🎓 Scholarly reference datasets from **Kaggle** and various body type classification resources were used for simulation and demo purposes.
+
+- 💡 Inspiration and architectural design refined with insights from academic research papers and open-source virtual try-on studies.
+
+---
+
+📌 *This project is open for collaborations or discussions — feel free to connect via GitHub or LinkedIn!*
