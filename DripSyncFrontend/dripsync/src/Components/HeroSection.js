@@ -48,11 +48,11 @@ const HeroSection = ({ user_id, gender, height, weight, waist, skintone }) => {
   }, [gender, height, weight, waist, skintone]);
 
   return (
-    <nav className="bg-gray-900 p-4 text-white">
+    <nav className="bg-#111817 p-4 text-white">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/home" className="text-xl font-bold">
-          <img src={require('./lodo.jpg')} alt="DripSync Logo" className="h-16 inline" />
+          <img src={require('./Logo_Dripsync_final.png')} alt="DripSync Logo" className="h-16 inline" />
         </Link>
 
         {/* Navbar Links */}
