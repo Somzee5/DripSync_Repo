@@ -13,5 +13,5 @@ Here's how DripSync performs virtual outfit try-ons:
 
 | Product Image | User Image | Virtual Try-On Result |
 |---------------|------------|------------------------|
-| ![Product](Images/product.png) | ![User](Images/user_input.png) | ![Result](Images/tryon_result.png) |
+| ![Product](Images/product.png) | ![User](Images/swan.jpg) | ![Result](Images/tryon_result.jpg) |
 
