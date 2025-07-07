@@ -1,4 +1,3 @@
-
 ![Logo](./Images/Logo_Dripsync_final.png)
 
 # 🧥 DripSync - Personalized Outfit Recommendation Platform
@@ -29,6 +28,3 @@ Designed to enhance fashion e-commerce experiences by recommending outfits that 
     </tr>
   </table>
 </div>
-
-
-
