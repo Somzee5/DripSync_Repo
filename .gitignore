@@ -1,3 +1,16 @@
+# Ignore node_modules
+node_modules/
+
+# Ignore package-lock.json
+package-lock.json
+
+# Ignore Python numpy files
 Model Training/*.npy
 
-node_modules/
+# Ignore all profile images
+Backend/Authorization-Backend/authapi/media/profile_images/
+
+# If you want to ignore ALL media files under 'media', you could do:
+Backend/Authorization-Backend/authapi/media/
+
+Backend/Card_backend/results/
