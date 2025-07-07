@@ -48,7 +48,7 @@ const HeroSection = ({ user_id, gender, height, weight, waist, skintone }) => {
   }, [gender, height, weight, waist, skintone]);
 
   return (
-    <nav className="bg-#111817 p-4 text-white">
+    <nav className="bg-black p-4 text-white">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/home" className="text-xl font-bold">

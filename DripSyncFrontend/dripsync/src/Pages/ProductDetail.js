@@ -86,7 +86,7 @@ const ProductDetail = () => {
 
   return (
     <div className="product-detail-page">
-      <HeroSection />
+      <HeroSection /> 
       <div className="product-detail-container">
         <div className="product-image">
           <img src={product.URL_image} alt={product.Brand} />

@@ -11,7 +11,7 @@ html, body {
   align-items: flex-start; /* Align cards at the top */
   gap: 20px;
   padding: 20px;
-  background-color: #111817;
+  background-color: black;
   height: 100vh; /* Full height of the viewport */
   flex-direction: row; /* Keep the cards side by side */
   flex-wrap: wrap; /* Allow wrapping if screen is too small */
