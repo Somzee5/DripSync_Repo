@@ -28,6 +28,7 @@ It aims to bridge the gap between **personal styling** and **e-commerce platform
 | 🐍 **Backend**        | Django Framework, 🌐 REST APIs |
 | 🧠 **ML / Computer Vision** | 🐍 Python, 👁️ OpenCV, 👕 cloth-segmentation |
 | 🗄️ **Database**        | SQLite3 (for development), Django ORM |
+| 📂 **Product Dataset**        | Ajio fashion datasets from Kaggle containing product images, categories, colors, and URLs |
 | 🛠️ **Tools & Utilities** | 📬 Postman, 🐙 GitHub, 💻 VS Code |
 
 ---
@@ -42,17 +43,20 @@ It aims to bridge the gap between **personal styling** and **e-commerce platform
   - 🧍 **Step 1: Body-Type Based Filtering:**  
     Based on the user’s input height, weight, and measurements, the system estimates their body shape (e.g., pear, inverted triangle, rectangle, etc.) using a BMI-like logic and filters out unsuitable categories.
   - 🌈 **Step 2: Skin Tone-Based Filtering:**  
-    Once a category is selected, only the outfits with colors aligning well with the user’s undertone are recommended, enhancing personal appeal.
+    Once a category is selected, only the outfits with colors aligning well with the user’s undertone are recommended, enhancing personal appeal 👨🏻‍🦱👨🏽‍🦱👨🏾‍🦱👨🏿‍🦱
 
 - 👕 **Smart Outfit Recommendations:** Final list of products is curated using physical matching instead of just user search/wishlist
 - 🧥 **Virtual Try-On Feature:** Garments are realistically overlayed onto the user’s profile image using pose estimation and cloth-segmentation via OpenCV
-- 🗂️ **Catalog Browsing:** Users can browse all outfits or just their personalized recommendations
+
+- 📦 **Wardrobe :**  Users can save preferred outfits and directly proceed to the product on Ajio for purchase
+
+
 - 🔒 **User Auth & Styling History:** (Optional) Secure login to maintain profile and outfit history
 
 ---
 ## 📸 Project Demo
 
-### 1️⃣ Virtual Try-On with Pose Mapping:
+### 1️⃣ Virtual Try-On:
 
 <div align="center">
   <table>
@@ -75,4 +79,5 @@ It aims to bridge the gap between **personal styling** and **e-commerce platform
 
 ---
 
-*(Recommendation Flow Demo will be added below once images are ready.)*
+
+

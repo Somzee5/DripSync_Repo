@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../utils/api';
-import logo from './lodo.jpg';
 
 const TypingText = () => {
   const phrases = [

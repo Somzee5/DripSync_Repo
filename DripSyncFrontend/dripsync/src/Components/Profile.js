@@ -1,6 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import api from '../utils/api';
+ 
+const TypingText = () => {
+  const phrases = [
+    "Your ultimate fashion guide.",
+    "Personalized outfits just for you.",
+    "Experience virtual try-ons!",
+  ];
+  const [text, setText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+
+  useEffect(() => {
+    const currentPhrase = phrases[index];
+    const typingInterval = setInterval(() => {
+      if (charIndex < currentPhrase.length) {
+        setText((prev) => prev + currentPhrase[charIndex]);
+        setCharIndex((prev) => prev + 1);
+      } else {
+        clearInterval(typingInterval);
+        setTimeout(() => {
+          setText("");
+          setCharIndex(0);
+          setIndex((prev) => (prev + 1) % phrases.length);
+        }, 2000);
+      }
+    }, 100);
+    return () => clearInterval(typingInterval);
+  }, [charIndex, index]);
+
+  return <div className="text-lg text-gray-400 mt-4">{text}</div>;
+};
+
 
 export default function Profile() {
   const { user_id } = useParams();
@@ -49,6 +81,7 @@ export default function Profile() {
     <div className="flex h-screen bg-black">
       <div className="flex flex-col justify-center items-start w-1/2 px-10">
         <h1 className="text-6xl font-extrabold text-indigo-400 tracking-wide">DripSync</h1>
+        <TypingText />
       </div>
 
       <div className="flex justify-center items-center w-1/2 bg-gray-900 p-10">
