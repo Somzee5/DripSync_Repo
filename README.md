@@ -159,4 +159,5 @@ DripSync aims to evolve from a virtual try-on prototype to a full-fledged fashio
 
 ---
 
-📌 *This project is open for collaborations or discussions — feel free to connect via GitHub or LinkedIn!*
+📌 *This project is open for collaborations or discussions — feel free to connect via [GitHub](https://github.com/Somzee5) or [LinkedIn](https://www.linkedin.com/in/soham-patil-344aa1264/)!*
+
