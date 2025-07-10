@@ -82,9 +82,81 @@ It aims to bridge the gap between **personal styling** and **e-commerce platform
 
 
 
-### 2️⃣ Two-Stage Outfit Recommendation Flow
+## 🖼️ Screenshots
 
-🎥 **[Demo Video Placeholder – YouTube link to be added here]**
+### 1️⃣ Profile Creation
+
+<img src="Images/create-profile.jpg" width="700"/>
+
+> Users enter physical details like height, weight, gender, waist size, age, and select their skin tone using a 6-color palette.  
+> Most importantly, they upload a profile image which is later used for the virtual try-on process.
+
+---
+
+### 2️⃣ Home Page
+
+<img src="Images/home.jpg" width="700"/>
+
+> The homepage features a search bar and dropdowns for **Men**, **Women**, and **Recommended** sections, making navigation intuitive and structured.
+
+---
+
+### 3️⃣ All Categories
+
+<img src="Images/categories.jpg" width="700"/>
+
+> A comprehensive catalog of male and female fashion categories, showcasing a large variety of outfits **without personalization** — ideal for browsing.
+
+---
+
+### 4️⃣ Personalized Categories (Body-Type Based)
+
+<img src="Images/recommended-categories.jpg" width="700"/>
+
+> Based on the user’s physical attributes, the system filters the most suitable outfit categories that match their **body type** (like triangle, rectangle, etc.).
+
+---
+
+### 5️⃣ Skin Tone Based Product Recommendations
+
+<img src="Images/skintone-recommendations.jpg" width="700"/>
+
+> Once a personalized category is selected, only those outfits that **match the user's skin tone** are recommended — ensuring the best visual harmony and confidence boost.
+
+---
+
+### 6️⃣ Wardrobe + Profile Page
+
+<img src="Images/profile-wardrobe.jpg" width="700"/>
+
+> The **Wardrobe** acts like a wishlist/cart — where saved outfits can be revisited or purchased.  
+> The **Profile page** allows users to update their image or personal details anytime.
+
+---
+
+### 7️⃣ Ajio Product Redirection
+
+<img src="Images/ajio-redirection.jpg" width="700"/>
+
+> When the user clicks **"Buy"** on any saved product, they are directly redirected to the original product page on **Ajio**, enabling real purchases.
+
+---
+
+### 8️⃣ Product Details Page
+
+<img src="Images/product-details.jpg" width="700"/>
+
+> The product page includes options to **Add to Wardrobe**, **Try On**, or **Buy Now**.  
+> Also displays **"You Might Also Like"** recommendations generated using **KNN** based similarity.
+
+---
+
+### 9️⃣ Virtual Try-On Output
+
+<img src="Images/tryon.jpg" width="700"/>
+
+> The final virtual try-on result generated using **OpenCV**, showing the selected outfit realistically applied to the user’s image.
+
 
 ---
 
