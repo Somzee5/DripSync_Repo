@@ -32,13 +32,13 @@ unisex_categories = [
     # , 'Sweaters'
 ]
 
-# Load similarity matrices for recommendations
-similarity1 = np.load(r'D:\DripSync-MP\DripSync_Repo\Model Training\similarity_matrix_men.npy')
-similarity2 = np.load(r'D:\DripSync-MP\DripSync_Repo\Model Training\similarity_matrix_women.npy')
+ # Load similarity matrices for recommendations
+similarity1 = np.load(r'D:\DripSync_Deploy\DripSync_Repo\Model Training\similarity_matrix_men.npy')
+similarity2 = np.load(r'D:\DripSync_Deploy\DripSync_Repo\Model Training\similarity_matrix_women.npy')
 
 # Load skin tone and body type dataframes
-skin_tone_df = pd.read_csv(r"D:\DripSync-MP\DripSync_Repo\Backend\Card_backend\Impl2.csv")
-body_type_df = pd.read_csv(r"D:\DripSync-MP\DripSync_Repo\Backend\Card_backend\Body_Type.csv")
+skin_tone_df = pd.read_csv(r"D:\DripSync_Deploy\DripSync_Repo\Backend\Card_backend\Impl2.csv")
+body_type_df = pd.read_csv(r"D:\DripSync_Deploy\DripSync_Repo\Backend\Card_backend\Body_Type.csv")
 
 def search_description(df, search_term):
     # Filter the DataFrame based on the search term
